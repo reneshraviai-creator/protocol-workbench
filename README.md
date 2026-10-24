@@ -1,6 +1,6 @@
 # Protocol Workbench — private development archive
 
-Current source snapshot: **2.0.0-preview.11**. Legacy; unresolved dependency advisory findings. Native Windows ARM64/x86 latest archived builds are this version. No source-server-to-simulation import.
+Current source snapshot: **2.0.0-preview.12**. Source-server-to-simulation import; superseded by Preview 13 dependency remediation. No installer archives were built for Preview 12.
 
 This is a private, clean export of selected application source checkpoints. Original local Git history, user projects, accounts, credentials, recordings, backups, private engineering evidence and screenshots are excluded. Third-party notices are retained. This repository is not a public open-source release.
 

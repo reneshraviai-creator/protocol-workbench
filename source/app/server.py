@@ -502,6 +502,8 @@ def create_app(project=None):
     from recovery import RecoveryStore
     app['recovery']=RecoveryStore(DATA/'recovery.sqlite3');remember_safe(app['recovery'],'workspace','Saved workspace at startup',project)
     app['resources']=ResourceRegistry();app['engine']=Engine(project,registry=app['resources']);app['shutdown']=asyncio.Event()
+    from server_import import install as install_server_import
+    install_server_import(app)
     from scenario_api import install as install_scenario_automation
     install_scenario_automation(app)
     app['catalogue']=Catalogue(DATA/'scenarios.sqlite3');app['runner']=Runner(app['catalogue'],registry=app['resources']);app['monitors']=MonitorHub()

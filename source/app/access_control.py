@@ -103,11 +103,11 @@ def permitted(role,path,method,body):
     if role=='Read-only':return False
     if role=='Engineer':
         # Explicit set: adding a new API does not implicitly grant mutation privileges.
-        return path in ENGINEER or bool(re.fullmatch(r'/api/(monitors/[^/]+/(write|record|record-stop)|health/[^/]+/resume|mixed-generation/[^/]+/(cancel|accept)|mixed-templates/[^/]+/delete|bridge-templates/[^/]+/delete)',path))
+        return path in ENGINEER or bool(re.fullmatch(r'/api/(opcua-import/[^/]+/(selection|draft|cancel)|monitors/[^/]+/(write|record|record-stop)|health/[^/]+/resume|mixed-generation/[^/]+/(cancel|accept)|mixed-templates/[^/]+/delete|bridge-templates/[^/]+/delete)',path))
     if role=='Operator':return path in ('/api/action','/api/scenarios/run','/api/monitors','/api/watchlists/start') or bool(re.fullmatch(r'/api/monitors/[^/]+/(record|record-stop)',path))
     return False
 
-ENGINEER=set('/api/project /api/action /api/connection /api/resolve /api/node-inspect /api/monitors /api/watchlists /api/watchlists/start /api/import-tags /api/generate-tags /api/validate-project /api/simulation-draft /api/preview-tags /api/scenarios /api/scenarios/run /api/signal-path/bulk /api/signal-path/draft /api/signal-path/demo /api/recovery/drafts /api/device-setup/inspect /api/device-setup/address /api/templates/preview /api/templates/save /api/templates/import /api/mixed-templates /api/mixed-generation /api/bridges/preview /api/bridge-templates /api/bridge-templates/resolve /api/engineering-reports/preview /api/engineering-reports/save /api/report-templates /api/diagnostics /api/rtu-demo/start /api/certificate'.split())
+ENGINEER=set('/api/opcua-import /api/project /api/action /api/connection /api/resolve /api/node-inspect /api/monitors /api/watchlists /api/watchlists/start /api/import-tags /api/generate-tags /api/validate-project /api/simulation-draft /api/preview-tags /api/scenarios /api/scenarios/run /api/signal-path/bulk /api/signal-path/draft /api/signal-path/demo /api/recovery/drafts /api/device-setup/inspect /api/device-setup/address /api/templates/preview /api/templates/save /api/templates/import /api/mixed-templates /api/mixed-generation /api/bridges/preview /api/bridge-templates /api/bridge-templates/resolve /api/engineering-reports/preview /api/engineering-reports/save /api/report-templates /api/diagnostics /api/rtu-demo/start /api/certificate'.split())
 
 
 async def status(request):

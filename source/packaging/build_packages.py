@@ -5,7 +5,7 @@ BASE=Path(__file__).resolve().parents[1]
 OUT=BASE.parent/'Distribution-Phase11'
 VERSION='2.0.0-preview.11'
 TARGETS={'Windows-ARM64':('Windows ARM64','PW-Win-ARM64','arm64'),'Windows-x86':('Windows 32 bit','PW-Win-x86','x86'),'Windows-x64':('Windows 64 bit','PW-Win-x64','x64'),'macOS':('macOS','ProtocolWorkbench-Community-macOS',None),'Linux':('Linux','ProtocolWorkbench-Community-Linux',None)}
-GUIDES=['Next_Guide.html','Bridge_Guide.html','Communication_Health_Guide.html','Communication_Verification_Guide.html','Data_Verification_Guide.html','Logging_Reporting_Guide.html','Mixed_Tags_Guide.html','Performance_Guide.html','Project_Management_Guide.html','Scenario_Automation_Guide.html','Security_Guide.html']
+GUIDES=['OPC_UA_Server_Import_Guide.html','Next_Guide.html','Bridge_Guide.html','Communication_Health_Guide.html','Communication_Verification_Guide.html','Data_Verification_Guide.html','Logging_Reporting_Guide.html','Mixed_Tags_Guide.html','Performance_Guide.html','Project_Management_Guide.html','Scenario_Automation_Guide.html','Security_Guide.html']
 
 
 def build(platform,runtime_root=None):
@@ -20,6 +20,7 @@ def build(platform,runtime_root=None):
   for source in (BASE/'packaging/guides').glob('*.html'):shutil.copy2(source,guide_root/source.name)
   shutil.copy2(BASE/'packaging/guides/Installation.html',guide_root/'Installation_Guide.html');shutil.copy2(BASE/'packaging/guides/Troubleshooting.html',guide_root/'Troubleshooting_Guide.html')
   shutil.copytree(BASE/'packaging/release-docs',guide_root/'editable')
+  shutil.copy2(BASE/'guides/OPC_UA_Server_Import_Guide.md',guide_root/'editable'/'OPC_UA_Server_Import_Guide.md')
  shutil.copy2(BASE/'requirements.txt',payload/'requirements.txt');shutil.copy2(BASE/'packaging/guides/Installation.html',root/'START_HERE.html')
  shutil.copytree(BASE.parent/'ProtocolWorkbench/licenses',payload/'licenses');shutil.copy2(BASE/'packaging/pyserial-3.5-LICENSE.txt',payload/'licenses/pyserial-3.5-LICENSE.txt')
  for source in (BASE/'packaging/reporting-dependencies').glob('*LICENSE.txt'):shutil.copy2(source,payload/'licenses'/source.name)

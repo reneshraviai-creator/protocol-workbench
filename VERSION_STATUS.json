@@ -1,7 +1,7 @@
 {
-  "version": "2.0.0-preview.11",
+  "version": "2.0.0-preview.12",
   "classification": "Engineering Preview",
-  "comments": "Legacy; unresolved dependency advisory findings. Native Windows ARM64/x86 latest archived builds are this version. No source-server-to-simulation import.",
+  "comments": "Source-server-to-simulation import; superseded by Preview 13 dependency remediation. No installer archives were built for Preview 12.",
   "clean_export": true,
   "original_git_history_included": false,
   "user_data_included": false
