@@ -1,12 +1,13 @@
 """Read-only static archive validation; never executes foreign binaries."""
 import hashlib,json,struct,zipfile
 from pathlib import Path
-from build_packages import BASE,OUT,VERSION,TARGETS
+from build_packages import BASE,OUT,VERSION,TARGETS,SUPPORTED_TARGETS
 
 
-def verify(output=OUT):
+def verify(output=OUT,targets=SUPPORTED_TARGETS):
  rows=[]
- for target,(label,folder,arch) in TARGETS.items():
+ for target in targets:
+  label,folder,arch=TARGETS[target]
   path=output/('production release _ '+label)/('ProtocolWorkbench-'+VERSION+'-'+target+'.zip')
   with zipfile.ZipFile(path) as z:
    assert z.testzip() is None;names=z.namelist();assert all(n.startswith(folder+'/') and '..' not in Path(n).parts for n in names)
@@ -38,4 +39,4 @@ def verify(output=OUT):
 
 if __name__=='__main__':
  import argparse
- parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=OUT);args=parser.parse_args();rows=verify(args.output);(args.output/'Distribution_Manifest.json').write_text(json.dumps({'version':VERSION,'classification':'Engineering Preview','packages':rows,'note':'Checksums/PE/static privacy checks are not target-native or commercial qualification.'},indent=2));print(json.dumps(rows,indent=2))
+ parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,default=OUT);parser.add_argument('--targets',nargs='+',choices=list(TARGETS),default=list(SUPPORTED_TARGETS));args=parser.parse_args();rows=verify(args.output,args.targets);(args.output/'Distribution_Manifest.json').write_text(json.dumps({'version':VERSION,'classification':'Engineering Preview','packages':rows,'note':'Checksums/PE/static privacy checks are not target-native or commercial qualification.'},indent=2));print(json.dumps(rows,indent=2))

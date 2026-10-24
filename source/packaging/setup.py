@@ -1,8 +1,12 @@
 """Per-user preview installer. Never targets the existing development installation."""
 import argparse,hashlib,json,os,platform,shutil,struct,subprocess,sys,time,uuid,zipfile
 from pathlib import Path
-VERSION='2.0.0-preview.11'
 HERE=Path(__file__).resolve().parent
+# Read the same literal version as the application; never execute the source.
+import ast
+_version_file=HERE/'payload/app/version.py'
+if not _version_file.exists():_version_file=HERE.parent/'app/version.py'
+VERSION=next(ast.literal_eval(n.value) for n in ast.parse(_version_file.read_text()).body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='VERSION' for t in n.targets))
 
 def default_prefix():
  if sys.platform=='win32':return Path(os.environ['LOCALAPPDATA'])/'ProtocolWorkbenchCommunity'

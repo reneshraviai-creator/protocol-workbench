@@ -1,22 +1,28 @@
-# Installation — Protocol Workbench 2.0.0-preview.11
+# Installation — Protocol Workbench 2.0.0-preview.13
 
 Engineering Preview; use local simulators and isolated non-production test equipment. These are unsigned archive installers, not MSI/DMG/DEB images. Windows/Linux native acceptance remains pending. Do not bypass operating-system security warnings.
+
+## Security-refresh availability
+
+Preview 13 provides Windows x64, macOS and Linux archives only. Official cryptography 50.0.2 native Windows ARM64/win32 wheels are unavailable; those targets are blocked. Do not substitute an old affected runtime or claim x64 emulation is qualified. Native Windows/Linux execution remains NOT TESTED.
+
+Read [recommended system specifications](System_Requirements.html) before installation; these are provisional sizing guidelines.
 
 ## Choose the right package
 | Computer | Package |
 |---|---|
-| Windows ARM64, including an ARM Windows VM on Apple Silicon | Windows ARM64 |
+| Windows ARM64, including an ARM Windows VM on Apple Silicon | BLOCKED in this security refresh; no patched native installer supplied |
 | Windows x64 | Windows 64 bit |
-| Windows x86 (32-bit OS) | Windows 32 bit |
+| Windows x86 (32-bit OS) | BLOCKED in this security refresh; no patched native installer supplied |
 | macOS with Python 3.11–3.14 | macOS |
 | Linux with Python 3.11–3.14 and venv support | Linux |
 
-Windows packages include an architecture-specific Python runtime and dependencies and install offline. Linux/macOS packages create a virtual environment and download pinned dependencies from PyPI; internet is needed during installation, not for licence information/acknowledgement or normal offline simulator use. Dependencies differ across native Windows builds; inspect BUILD_INFO.json and payload/requirements.txt. Cross-architecture static checks do not establish native execution.
+The supplied Windows x64 package includes an architecture-specific Python runtime and dependencies and install offline. Linux/macOS packages create a virtual environment and download pinned dependencies from PyPI; internet is needed during installation, not for licence information/acknowledgement or normal offline simulator use. Dependencies differ across native Windows builds; inspect BUILD_INFO.json and payload/requirements.txt. Cross-architecture static checks do not establish native execution.
 
 ## Windows, step by step
 1. Download the correct ZIP and its .sha256 checksum file. Verify with PowerShell Get-FileHash if required by your organisation.
 2. In File Explorer, right-click the ZIP → Extract All. Choose a short folder such as C:\PW. Finish extraction. Do not run files while browsing the ZIP or from its temporary preview folder.
-3. Open the extracted PW-Win-ARM64, PW-Win-x64 or PW-Win-x86 folder. Run Check Runtime.bat. It must report imports OK and the expected architecture/bitness.
+3. Open the extracted PW-Win-x64 folder. Run Check Runtime.bat. It must report imports OK and the expected architecture/bitness.
 4. Run Install.bat. It installs for your Windows user under LocalAppData\ProtocolWorkbenchCommunity; it does not need administrator access or a separate Python installation. Keep the console output if it fails.
 5. Run Open App.bat. Open http://127.0.0.1:8878/ if the browser does not open. The development app on port 8877 is separate.
 6. Run Validate Installation.bat for isolated loopback protocol checks. It does not contact saved devices.

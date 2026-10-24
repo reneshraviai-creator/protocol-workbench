@@ -1,6 +1,6 @@
 # Protocol Workbench — private development archive
 
-Current source snapshot: **2.0.0-preview.12**. Source-server-to-simulation import; superseded by Preview 13 dependency remediation. No installer archives were built for Preview 12.
+Current source snapshot: **2.0.0-preview.13**. Security refresh with aiohttp 3.14.5 and cryptography 50.0.2; 688 tests passed in the recorded Mac environment. Windows x64/macOS/Linux archives available; native Windows ARM64/x86 patched builds blocked.
 
 This is a private, clean export of selected application source checkpoints. Original local Git history, user projects, accounts, credentials, recordings, backups, private engineering evidence and screenshots are excluded. Third-party notices are retained. This repository is not a public open-source release.
 

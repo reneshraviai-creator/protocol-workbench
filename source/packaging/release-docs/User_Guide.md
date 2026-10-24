@@ -13,3 +13,8 @@ Authentication is optional and OFF until the owner creates an Administrator in S
 Project & settings → About → Licence Information shows the installed version, organisation/reference/type/dates, publisher and contact. Administrators can edit metadata. Runtime software name/version are not editable. Expiry produces an informational banner; normal operation remains available. No licence keys, payment connection or online validation exist.
 
 Authentication-enabled writer leases expire after five minutes and limits apply; inspect Security_Guide.html. Read-only roles can observe but cannot configure/run writers. Reports distinguish PASS, FAIL, INCONCLUSIVE and NOT TESTED. The application remains Engineering Preview; validate actual device/OS behavior in an isolated environment.
+
+
+## New in Preview 13
+
+The security refresh includes OPC UA source-server browsing, folder/individual/all selection, optional starting-value snapshots and a separate stopped local simulator. Open Scenarios → Create simulation from OPC UA server. Read [the complete import guide](OPC_UA_Server_Import_Guide.html) and [recommended system specifications](System_Requirements.html). Existing source credentials are not copied to the new simulator. Windows ARM64/32-bit security builds are blocked; see Installation.

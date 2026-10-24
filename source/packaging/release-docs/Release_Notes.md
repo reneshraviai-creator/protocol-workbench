@@ -1,9 +1,11 @@
-# Release notes — 2.0.0-preview.11
+# Release notes — 2.0.0-preview.13
 
-Engineering Preview; Phase11 implementation, not a commercial readiness certification.
+Engineering Preview: dependency remediation and refreshed package preparation, not a commercial readiness certificate.
 
-Includes Phases1–10: supported OPC UA/Modbus TCP/RTU adapters, simulation, tag tools, monitoring, bridging, scenario automation, verification, recovery, performance, engineering reports, optional local security and project management. Phase11 adds paper-licence metadata, per-login informational receipt, nonblocking expiry, unified runtime version, refreshed distribution payloads/dependencies/notices, installation validation, staged-upgrade backups, explicit release/data rollback and minimal diagnostic ZIPs.
+Updates aiohttp from 3.13.3 to 3.14.5; consistently requires cryptography 50.0.2. Exact runtime dependency locks and package/runtime metadata checks prevent reusing older affected payloads. Advisory results and native acceptance are recorded in the accompanying qualification report, with explicit scan scope and date.
 
-Windows packages: ARM64, x86 and x64 offline runtimes. macOS/Linux: online Python venv installers. Default service port8878 is separate from development8877. No package embeds user projects/accounts/credentials or private historical checkpoints. No signing/notarisation/MSI/DMG/DEB or online licence mechanism. Paper agreement is DRAFT for review; no contract is accepted or licence issued by notice acknowledgement.
+Includes Preview 12's OPC UA server-to-simulation import, all existing protocol/GUI adapters, licence information and project management. Recommended hardware and VM sizing are now included in HTML and editable guides as provisional recommendations.
 
-Qualification results are supplied separately. Windows/Linux native execution, physical PLC/serial compatibility, endurance, independent security review and final Phase12 assessment remain outstanding. Never infer native support from static architecture checks or passing loopback tests. Existing installations/data must be backed up and qualified before upgrade. Private source history must be sanitised before public publication.
+Prepared package targets: Windows x64 offline runtime; macOS and Linux online virtual-environment installers. Native Windows ARM64 and win32 are BLOCKED: official cryptography 50.0.2 wheels are unavailable. No old affected package is relabelled as patched. No emulation qualification is claimed. Default packaged dashboard port 8878 stays separate from development 8877.
+
+Archives are unsigned, not MSI/DMG/DEB images. Native Windows/Linux, physical PLC/RTU, long-duration endurance and independent security acceptance remain outstanding. A zero-match PyPI advisory scan is not a full-system vulnerability certificate. Current running development app and old distribution archives are unchanged. No publishing or main application upgrade was performed.
