@@ -1,0 +1,47 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Automated scenarios</title><style>body{max-width:1050px;margin:35px auto;padding:20px;color:#183448;font:16px/1.7 system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}</style><h1>Automated scenarios · Phase 7</h1><a href="Next_Guide.html">User guide</a><pre># Automated scenarios — Phase 7
+
+Use only local simulators and isolated test equipment. A test write can change the destination value; stopping a test does not undo writes.
+
+## Build and run
+1. Configure devices/tags/jobs in the existing workspace. Open **Scenarios → Advanced test scenario**. The scenario captures its own device configuration.
+2. Add ordered steps: start job, write, read, assert, wait, check, stop job. Give steps descriptive labels. Existing selected/all-tag operations and signal-path probes remain available.
+3. For a read, choose tags and a result variable. For a value assertion, reference a preceding read variable; use equals, allowed difference or range. DateTime equals accepts a timezone-aware ISO 8601 value and compares the same UTC instant, including equivalent timezone offsets. Use numeric difference/range only for numeric values.
+4. Choose **check** for observed datatype, exact quality/status name, protocol response outcome or elapsed execution time. Select a preceding evidence step. Datatype/status require a read; response requires a read/write. Duration can check any prior step. Checks apply to all recorded selected tags/transactions, not just the first.
+5. Under Execution policy, leave Run when at Always, or choose a preceding step and final result PASSED/FAILED/ERROR/SKIPPED. A false condition records SKIPPED with a reason. Step numbers are explicit: review references after moving/removing steps.
+6. Continue after failure/error permits later diagnostics, but the overall run still fails/errors. ERROR takes precedence over FAILED. An intentional skipped branch does not fail an otherwise passing run. Steps never reached are counted separately from executed results in the evidence.
+7. Reads and assertions/checks support 1–5 attempts and 0–30 seconds between attempts. Timeout (0.1–300 seconds) bounds the whole step, including delays and connection cleanup. Assertions retry captured evidence; they do not automatically re-read a device. Use another read step when a fresh value is needed. Writes, signal-path probes and job lifecycle steps cannot replay automatically.
+8. Save the scenario; saving never starts it. Run test explicitly. Stop this run or Stop all tests cancels waiting/I/O and cleans up test-owned jobs and reservations. Cancellation does not retry or undo dispatched writes.
+
+## Protocol meanings
+- OPC UA datatype assertions use the observed VariantType. Configured mappings/access still undergo existing prepare validation.
+- Modbus has no datatype field on the wire. Its datatype check confirms the configured decoding used, not a device-declared REAL/INT type.
+- OPC UA status checks compare the exact observed quality name, e.g. Good or BadSensorFailure. Modbus reports `TransportGood; process quality unavailable`; this is not equivalent to OPC UA Good process quality.
+- Response checks compare recorded transaction states: SUCCEEDED, FAILED, UNKNOWN, NOT_ATTEMPTED, PARTIAL or RESPONSE_ERROR. No recorded transaction fails a response check, including an expected NOT_ATTEMPTED; absence is not invented protocol evidence. A failed prepare/connect may have no data transaction.
+- SUCCEEDED means service acknowledgement, not independent readback or physical delivery. Use read/assert or existing signal-path verification when needed. A bad-quality read still fails/errors; Continue can allow a later status/response check, but cannot turn the earlier error into a passing run.
+- Duration uses monotonic elapsed seconds, including retries, scheduling and client cleanup, excluding final run-owned job teardown. This measures application execution, not guaranteed PLC scan time.
+
+## Parallel runs
+Each scenario&#x27;s steps remain sequential. Start a separate independent scenario while another runs for parallel execution (up to eight runs). Existing full-run reservations reject conflicting configured listener/serial ports and physical write targets before execution. Reservations are conservative and include conditional branches. Hostname aliases are not a network-wide ownership guarantee. Reading values does not lock them against external changes. Cleanup releases reservations; the workspace and other independent runs remain.
+
+## Versions and reproducibility
+Scenarios show a revision number. Each saved content change stores a durable local revision and SHA256 definition fingerprint. Changes to only saved timestamps do not create a revision. Defaults explicitly saved by an editor are part of the definition. Claimed revision/fingerprint fields in imports are ignored. Existing scenarios gain their first revision lazily without changing their saved configuration.
+Run start records the actual revision, fingerprint, immutable configuration/step snapshot and Python/OS/protocol-library versions. Editing during a run affects future runs only. Version history → Review revision opens the old definition in the existing Builder. Review then Save creates a new current revision; it does not rewrite history or alter an existing run.
+Reproducibility means traceable definitions and observations, not identical live process values or wall-clock timing. Simulator random seeds and environmental inputs must also be controlled. Fingerprints identify definitions; they are not digital signatures.
+
+## History, comparison and evidence
+Open Test runs → View results. A results modal is a captured view; reopen it to refresh an active run. The execution log and attempt evidence show retries, states, error/skip reasons, elapsed times and correlated transactions. Tag results include actual read metadata with protocol scope. The modal shows at most 100 steps of attempt summaries; JSON/HTML contain complete evidence. The latest 100 runs appear in the list; durable SQLite history/revisions remain until data is removed externally. No history deletion/retention manager is added in this phase.
+Download evidence JSON or HTML report for revision/fingerprint, environment, logs, attempt evidence, observations and transaction statuses; connection snapshots/passwords are excluded from these exports. Existing tag-results CSV format remains unchanged. Values/tag names/targets may still be sensitive; review before sharing. Local catalogue snapshots retain configured credentials as before, so protect the data directory/backups.
+Choose two completed runs in Compare completed runs. The result identifies same/different definitions, revisions, outcomes, changed step values/errors/tag evidence and timing deltas. Comparisons align explicit step numbers; added/reordered steps need human interpretation. Same outcome does not prove physical causality. Legacy runs without a fingerprint are labelled accordingly. Download JSON for comparisons beyond the first 100 displayed steps. Selection survives polling.
+Existing Save as template, Export template and Import template preserve the new declarative step fields. Endpoints must be bound on import and credentials/certificate paths are excluded. Imports create stopped scenarios and never execute scripts. Existing template portability limitations for complex job features remain; review all device/job settings after import.
+
+## Troubleshooting
+- Invalid condition/check: choose an earlier step and compatible action. A skipped or unexecuted read has no datatype/status evidence.
+- Cannot retry a write: this is deliberate; an uncertain write cannot be safely replayed automatically.
+- Response missing: inspect connect/prepare errors and per-attempt evidence, rather than assuming a request reached the device.
+- Status mismatch: copy the exact observed status name; Modbus transport acknowledgement is not process quality.
+- Resource conflict: stop the named owner or choose independent endpoints/write targets. Parallel execution is separate runs, not simultaneous steps inside one run.
+- Run interrupted by application restart: it is marked ERROR with no automatic replay, preserving existing behaviour.
+- A very large run makes a large export/history database: archive evidence and protect local storage; no automatic pruning is added.
+
+No installer rebuild, native Windows/Linux qualification or hardware RTU/PLC validation is included in Phase 7. Phase 8 requires separate approval.
+</pre>

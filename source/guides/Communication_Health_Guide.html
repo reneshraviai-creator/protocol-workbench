@@ -1,0 +1,45 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Communication health guide</title><style>body{max-width:1000px;margin:35px auto;padding:20px;color:#183448;font:16px/1.7 system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}a{color:#007e85}</style><h1>Communication health and recovery · Phase 3</h1><a href="Next_Guide.html">User guide</a><pre># Communication health and recovery — Phase 3
+
+## Start here
+1. Open Connections. Configure a stopped connection using Configure, then expand Connection recovery settings.
+2. Keep hold_uncertain unless you have reviewed the write behaviour. Set Retry delay (the existing base delay), maximum automatic retries, fixed/exponential backoff and maximum delay. Save the connection and workspace. Saving does not contact a device or start a job.
+3. Start a job or read-only live monitor explicitly. Open Communication health to see actual observations. A saved connection can have several independent clients.
+4. For WAITING_RECOVERY, inspect Communication verification for point outcomes and the health panel for the failure category. Confirm the endpoint and current device state before choosing Review &amp; resume latest. Stop cancels a hold or delay and releases the worker&#x27;s resource reservation.
+5. Export communication-health.json to preserve evidence before closing or restarting the app. Inspect client shows the sanitized session record and retained events.
+
+## Policies
+hold_uncertain (default): read failures reconnect automatically. A recoverable failure during a write holds for review unless repeat-safe is explicitly confirmed and the outcome is known. Unknown writes always hold with this policy. This intentionally replaces automatic replay of uncertain writes.
+resume_latest: after a recoverable failure, reconnect, revalidate the tags and generate/read the latest values for the next cycle. Requires the engineer&#x27;s repeat-safe confirmation. Unknown previous writes remain unknown; resumption does not prove, undo or replay their exact batch. Permanent/security/internal failures with unknown writes still hold.
+retry_failed: requires repeat-safe confirmation. For transient write failures with complete, explicit outcomes, retry only the confirmed FAILED points with their captured values, excluding SUCCEEDED, UNKNOWN and NOT_ATTEMPTED. Then resume normal fresh cycles. Unknown outcomes hold. Permanent failures stop. This is for repeatable periodic values, not command/trigger registers.
+manual: every recoverable failure holds for review, including reads. Configuration/security/internal failures without unknown writes stop for correction.
+
+Repeat-safe means periodic setpoints or simulated values are safe to repeat; it is not appropriate for pulses, counters, acknowledgements, one-shot commands or actions with side effects. Acknowledged writes are not proof of physical process behaviour. Manual resume authorises a fresh cycle, not a claim that an earlier write failed. On an uncertain first write, initial values are not automatically replayed by Resume latest. Stop followed by Start is a new run and can apply configured initial values again.
+
+## Timing, retry limits and recovery
+Retry delay is 0.5–300 seconds. Fixed uses that delay. Exponential uses base × 2^(consecutive failure − 1), capped at the configured maximum (at least the base, at most 3,600 seconds). Retry limit is 0–1,000; zero means unlimited automatic attempts. A limit of 3 permits three retry attempts after the initial failure, then stops if the next operation also fails. Actual completed cycles reset the failure streak; a successful handshake alone does not. Manual release resets the streak and waits the base delay.
+Scheduled retries and actual retry attempts are separate: cancellation during a delay does not count as an attempted reconnect. Last recovery is measured from the first observed failure until a completed cycle (or successful live-monitor acquisition/health probe). It includes hold/backoff time. A closed worker freezes its unfinished outage duration. It does not measure an unobserved network outage before detection.
+Clients close before waiting or holding. Worker resource reservations remain held until Stop, preventing conflicting writers. On recovery the existing adapter reconnects, validates tags and reconstructs subscriptions as applicable. A gateway uses its destination connection&#x27;s recovery policy for the whole route; both client connections have independent health observations. Local simulator/listener jobs are not outbound client sessions and do not have recovery controllers.
+
+## Interpret the display
+CONNECTED and OPC UA ESTABLISHED mean the app observed a successful connection/session establishment. DEGRADED means an observed operation failed. CLOSED means that client was closed, which can be normal completion; it does not prove a PLC is offline. Modbus session is NOT_APPLICABLE. RUNNING, RECONNECTING, WAITING_RECOVERY and RETRY_EXHAUSTED describe the worker, independently of the client session rows. A retry-exhausted job has ERROR in its existing job card.
+Last successful communication and latency come from real connect/read/write/UA health operations. Latency is application-level elapsed time, not wire-only latency or PLC scan time. Uptime is measured per actual adapter instance and ends when the app closes that client. It is not device availability or a promised liveness guarantee between operations. An unchanged UA tag timestamp is not a lost session: live subscriptions use a real ServerState health read.
+Failure categories are TRANSPORT_SESSION, TIMEOUT, TRANSIENT_DEVICE, AUTH_SECURITY, CONFIGURATION_DATA and INTERNAL. Unknown errors stop instead of retrying indefinitely. Detailed existing job/transaction evidence remains available; the health panel stores exception names/categories, not exception text or tag values. Endpoint userinfo/path/query are omitted. Owner names identify the job instance, monitor or manual/diagnostic operation.
+
+## Scope and persistence
+Records are process-local and clear on restart. There are up to 2,048 recent client sessions, 1,024 recent worker controllers and 1,000 events; oldest closed records are evicted first. Active records remain controllable and can temporarily exceed the recent-record thresholds. GUI pages clients in groups of 50, displays the first 100 matching worker cards and 30 recent matching events; filter to locate a worker or export all retained evidence.
+Saved settings remain in project JSON and scenario snapshots. Running jobs keep their started configuration. Edit only stopped profiles. Existing scenario snapshots must be updated/recreated to adopt changed settings. Interrupted scenarios are not automatically replayed. Manual one-off connection actions record client health but do not become background retry workers.
+Local token and host/origin protections cover the health API and release operation. Resume requires explicit target confirmation and acknowledgement of unresolved writes. This phase adds no user accounts or role-based permissions. The history is diagnostic evidence, not a durable audit log.
+
+## Troubleshooting
+No records: start an intended client job, monitor or explicit connection test; merely viewing health does not contact devices.
+Closed rows accumulate: each reconnect uses a new client; inspect the current worker and most recent session. Export before retention eviction/restart.
+WAITING_RECOVERY: review the endpoint and prior point outcomes, then resume fresh values or Stop. Start does not bypass an existing held worker; its job card offers Review recovery.
+RETRY_EXHAUSTED: correct the cause, stop if needed, then explicitly start a new run. Review unknown writes before doing so.
+AUTH_SECURITY: correct credentials, policy, certificate/trust settings and server permissions. No automatic weakening of security is performed.
+CONFIGURATION_DATA: correct NodeIds, writable access, datatype, register mapping or validation errors. Test the corrected profile before starting again.
+TRANSPORT_SESSION/TIMEOUT: check the intended test endpoint, listener, cable/serial port and timeout. Fixed or capped exponential delays prevent tight retries.
+History disappears after restart: expected process-local behaviour. Use JSON export before restarting.
+
+## Qualification limits
+Local OPC UA and Modbus TCP reconnects and existing virtual RTU regression tests are covered. No new physical PLC/RS485, Windows/Linux native package, network impairment appliance or endurance qualification is claimed. Installer archives are unchanged in this phase. Use only local simulators and isolated test equipment as described in the existing product terms.
+</pre>

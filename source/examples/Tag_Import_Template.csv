@@ -1,0 +1,4 @@
+tag,dtype,nodeid,address,area,order
+Temperature,Float,,0,holding,ABCD
+Pressure,Float,,2,holding,CDAB
+Counter,UInt16,,4,holding,ABCD

@@ -1,0 +1,2 @@
+source_tag,destination_tag,scale,offset,minimum,maximum
+Temperature,Temperature,1,0,,

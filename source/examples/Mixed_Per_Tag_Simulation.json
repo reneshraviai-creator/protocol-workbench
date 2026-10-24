@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "name": "Mixed per-tag simulation example",
+  "connections": [
+    {
+      "id": "c",
+      "name": "Mixed OPC UA simulator",
+      "protocol": "opcua",
+      "host": "127.0.0.1",
+      "port": 52048,
+      "device_id": 1,
+      "url": "opc.tcp://127.0.0.1:15432",
+      "tags": [
+        {
+          "id": "a",
+          "tag": "Temperature",
+          "dtype": "Float",
+          "index": 1,
+          "address": 0,
+          "area": "holding",
+          "order": "ABCD",
+          "nodeid": "ns=2;s=Temperature",
+          "initial_value": "20",
+          "units": "\u00b0C",
+          "simulation": {
+            "pattern": "sine",
+            "minimum": 10,
+            "maximum": 80,
+            "period": 20
+          }
+        },
+        {
+          "id": "b",
+          "tag": "Running",
+          "dtype": "Boolean",
+          "index": 2,
+          "address": 2,
+          "area": "holding",
+          "nodeid": "ns=2;s=Running",
+          "initial_value": "false",
+          "simulation": {
+            "pattern": "constant",
+            "value": "true"
+          }
+        },
+        {
+          "id": "c",
+          "tag": "Count",
+          "dtype": "Int32",
+          "index": 3,
+          "address": 3,
+          "area": "holding",
+          "nodeid": "ns=2;s=Count",
+          "initial_value": "0",
+          "simulation": {
+            "pattern": "ramp",
+            "minimum": 0,
+            "maximum": 100,
+            "period": 20
+          },
+          "units": "count"
+        }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "j",
+      "name": "Mixed datatype simulator",
+      "kind": "server",
+      "connection": "c",
+      "interval": 2,
+      "dynamic": true,
+      "simulation": {
+        "pattern": "ramp",
+        "minimum": 0,
+        "maximum": 100
+      }
+    }
+  ],
+  "settings": {
+    "autostart": false
+  }
+}

@@ -1,0 +1,35 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Communication Verification Guide</title><style>body{max-width:1000px;margin:35px auto;padding:20px;font:16px/1.7 system-ui;color:#183448}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}a{color:#007c85}</style><h1>Communication verification guide</h1><a href="Next_Guide.html">Back to user guide</a><pre># Communication verification — Phase 1
+
+Open **Communication verification** in the existing sidebar. This page is read-only: viewing evidence never sends a request to equipment. Existing jobs, scanners, gateways, scenarios and manual operations continue to use the same adapters.
+
+## Reading the results
+
+- **SUCCEEDED**: the service returned a Good point result, or Modbus acknowledged the request&#x27;s complete address/count. This does not prove that the PLC retains the written value or the physical process behaves correctly.
+- **FAILED**: an explicit OPC UA rejection/bad data quality or confirmed Modbus exception. Modbus exceptions 05 (deferred acknowledgement) and 0B (no downstream response) remain UNKNOWN.
+- **UNKNOWN**: a batch was dispatched but no definitive outcome is available. Examples: timeout, cancellation, lost connection, missing response items, malformed Modbus acknowledgement. This is not a confirmed failure and does not trigger new retries.
+- **NOT_ATTEMPTED**: the adapter did not dispatch a request for this point; for example a local conversion failure or an earlier batch stopping the call.
+- **PARTIAL**: a transaction/batch contains mixed point outcomes, including unsent remainder points.
+- **RESPONSE_ERROR**: the service response was structurally inconsistent even though all expected point statuses individually reported Good (for example unexpected extra statuses). Inspect batch errors.
+
+OPC UA checks every returned status in a submitted batch, including statuses after a failed item. If the batch has failures or malformed length, later batches remain unsent. Extra statuses are retained in batch response evidence without inventing extra tag identities. Missing statuses remain UNKNOWN. Response errors still propagate to the existing job/scenario error handlers.
+
+Modbus has a group acknowledgement, not a separate PLC status per tag. Successful point rows inherit that group acknowledgement and say so. Read register counts and write acknowledgement address/count are validated; bit responses may contain protocol padding. Existing RTU port ownership and TCP/RTU error/reconnect behaviour are retained.
+
+## Metric definitions
+
+One **transaction** is one invocation of the shared adapter&#x27;s `read(tags)` or `write(tags, values)` method. One **batch** is one outgoing data-service request. UUIDs correlate transactions, batches and configured point IDs. The source is the local Workbench client; the destination is the sanitised endpoint and connection ID. Values, authentication fields, credentials and raw packets are not captured by this feature.
+
+**Total point operations** counts all points in completed transactions. **Attempted** excludes NOT_ATTEMPTED. Success percentage = SUCCEEDED / attempted × 100; it is empty when there are no attempts. Unknown points remain in the denominator. Reads and writes both contribute; filter history to distinguish them.
+
+**Current rate** is attempted points in transactions completed during the trailing 10 seconds, divided by 10. It is a completion-based point rate, not byte throughput or an instantaneous wire request rate. **Latency** is measured with a monotonic clock from dispatch to received batch response. Timeouts have elapsed durations in details, but do not enter the average/min/max response latency. Wall-clock request/response timestamps support human inspection. Overall duration also includes local work between batches. Response_count means returned point items for OPC UA and received response PDUs for Modbus; these are intentionally different units.
+
+Totals cover this process lifetime and include evicted evidence. History/filter/export covers at most 500 completed transactions and 50,000 point rows; evicted counts are shown. Individual transaction point tables use pages of 50. The ledger is memory-only and resets on restart. Long in-flight calls appear after completion/cancellation, not as live wire requests. Export JSON for full retained batch and status evidence; CSV has one row per retained point and protects spreadsheet formula prefixes.
+
+## Scope and limits
+
+Captured paths: engine client scans/simulation writes/gateways, scenario client reads/writes, manual tag-table operations, Live Inspector one-shot writes and Modbus polling, and local diagnostics that call these shared adapter methods. Each aiohttp app has its own evidence context; background tasks inherit it. Standalone use of the adapter falls back to a bounded default store.
+
+This is not a full OPC UA service analyser or passive sniffer. Discovery, connection handshakes, metadata/preparation requests, subscription creation/notifications/health checks and other clients&#x27; inbound simulator requests are not in this ledger. Existing Modbus monitor traffic capture remains separate and unchanged. Attempts that fail during connection/preparation before calling adapter read/write are also outside the ledger. No server rejection, timeout or loss is fabricated when evidence is unavailable. Complete service-level coverage and persistent audit logging remain outstanding; do not call those complete.
+
+No data verification mode, connection recovery policy, mixed datatype generator, authentication/RBAC, licence acknowledgement or packaging change from Phases 2–12 is included.
+</pre>

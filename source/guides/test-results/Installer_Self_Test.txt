@@ -1,0 +1,14 @@
+No signing policy available, user certificate cannot get verified
+No encrypting policy available, password may get transferred in plaintext
+Requested session timeout to be 3600000ms, got 600000ms instead
+{
+  "ok": true,
+  "checks": [
+    "Numeric conversion, all four word orders, exact UInt64",
+    "OPC UA scalar read/write: Float, Double, Boolean",
+    "Modbus TCP holding registers, coils, address zero, word swap",
+    "OPC UA to Modbus conversion and destination readback",
+    "Project schema validation"
+  ],
+  "message": "All local checks passed. No saved endpoints were contacted."
+}

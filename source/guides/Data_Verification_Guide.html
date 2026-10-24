@@ -1,0 +1,50 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Data verification guide</title><style>body{max-width:1000px;margin:35px auto;padding:20px;color:#183448;font:16px/1.7 system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}a{color:#007e85}</style><h1>Data verification · Phase 2</h1><a href="Next_Guide.html">User guide</a><pre># Data verification — Phase 2
+
+## Configure through the existing GUI
+
+Open **Data verification → Configure verification** for a stopped client job, or **Simulation &amp; routes → Configure → Data verification settings**. Configure a scan to check observed data, or a simulation/gateway job to verify the values it just wrote. Simulator server jobs expose data; use a separate client job to verify them.
+
+Saving settings does not start communication. Start the existing job explicitly. Saved profiles are part of project JSON and scenario snapshots. Existing scenario snapshots do not change when you edit the workspace. Recreate/update the snapshot using the existing workflow to use a new profile. Running workers keep their configuration snapshot.
+
+**Legacy** preserves `verify=true/false` behaviour: first and last write destinations, exact comparison, every cycle; scans have no legacy verification. Profiles are opt-in. Choosing Legacy saves `verification: null`, which is backward compatible. The legacy verify checkbox is ignored when an explicit profile is selected.
+
+## Modes and criteria
+
+- **Off:** no data checks.
+- **Basic:** first and last job points (one point is checked once).
+- **Sampled:** an evenly spaced deterministic sample, including both endpoints when sample size exceeds one. Samples do not rotate.
+- **Full:** all configured job points.
+- **Selected:** supplied names/IDs resolved to unique tag IDs, restricted to the job&#x27;s points.
+- **Continuous:** full verification after every job cycle; ignores the separate verification interval.
+
+Other enabled modes check immediately on the first cycle, then no more often than the configured verification interval. Zero means every cycle. Intervals cannot make verification run faster than the job cycle. Checks execute sequentially after a write, without an additional settling delay. Slow verification can cause the existing OVERRUN indication. This is a software/readback check, not proof of actuator or physical process behaviour.
+
+Exact compares typed values directly. Tolerance uses `math.isclose(actual, expected, abs_tol=absolute, rel_tol=relative)` for Float/Double only. Integers and Booleans always compare exactly. UInt64/Int64 values are exported/displayed as strings to avoid JavaScript rounding; integer sequence/range limits retain precision. Existing nine Boolean/numeric datatypes are supported; this phase does not add String, DateTime or Phase 5&#x27;s mixed generator.
+
+Null, missing, non-finite/out-of-range/type-invalid values, unexpected UA variant types and known bad quality are classified individually. Scalar arrays are not supported. An observed Bad quality is always rejected; turning off the quality requirement only permits missing quality metadata, not known Bad data. Numeric range checks do not apply to Boolean values.
+
+Source timestamp age, order, required presence and future-clock checks apply to OPC UA only. They depend on actual server source timestamps. Some servers omit source timestamps after client writes; selecting a timestamp rule then produces UNVERIFIED/INCONCLUSIVE, never fabricated freshness. Missing timestamps are not inferred from the browser receive time. Modbus has no source timestamp or application datatype/quality metadata, so timestamp rules are rejected. Modbus type checks validate the configured decode and scalar range; TransportGood means a successful protocol read, not verified device/process quality.
+
+Optional duplicate detection checks equal values within the selected set for the same datatype. Optional unchanged-duration and numerical step checks compare valid observations across checks within the job run. These are not generally errors for real process signals: leave them disabled unless the test requires unique/changing/monotonic values. Sequence checks do not implement counter wraparound. Timestamp order permits equal stamps and flags regressions. Job restart resets comparison baselines; source clocks need appropriate synchronisation.
+
+## Outcomes and failure policy
+
+- **PASS:** every selected point passed all enabled rules. This says nothing about points outside the sample.
+- **FAIL:** one or more selected points have definite violations. Multiple issue categories can describe one failed point; point counts are not double-counted.
+- **INCONCLUSIVE:** at least one selected point has unavailable evidence and there are no definite failed points.
+- Point **UNVERIFIED** includes unselected points and selected points without sufficient evidence. Unselected points carry NOT_SELECTED, never PASS.
+
+Failed-point allowance affects stopping only. Even an allowed failure remains FAIL in the result. Stop is the default. Continue leaves violations visible and allows the next cycle. Inconclusive selected points exceed the stop condition regardless of failed-point allowance; explicit Continue can keep collecting evidence. Transport errors/cancellation still propagate to existing connection recovery/stop logic. No new write retries or uncertain-write replay policy is introduced.
+
+On scan reads with known data/quality rejection, an explicit Continue profile can keep scanning and record the failure once per read; legacy scan behaviour remains unchanged. Freshness rules on gateway source data remain the existing separate source-age feature, while this profile verifies destination readback.
+
+## History, statistics and exports
+
+The panel shows checks, points with verdicts, successful/failed/unverified points, mismatches and quality issues. Totals are process-lifetime point-check counts, not distinct device/tag counts. A tag checked ten times contributes ten outcomes. A failed point with three issue codes contributes one failed point and three category occurrences. UNVERIFIED totals include points excluded by sampling/selection.
+
+History retains up to 200 checks and 50,000 point rows. Filters affect history and exports, not lifetime totals. Details are paged at 50 points and include expected/actual values, datatype, quality, source time, issues, criteria, threshold status and the related Phase 1 read transaction ID when available. Results reset on process restart; save JSON/CSV before restarting. Profiles persist. Phase 8 will address broader durable logging/report requirements.
+
+JSON contains complete retained evidence. CSV has one row per retained point with spreadsheet formula protection. Values may contain private process information. Existing local API token/origin checks protect the read-only result endpoints. No public upload is performed.
+
+Known limits: polling/check-time observations only, not complete sample capture; no verification of every unobserved change between cycles, no physical process certification, no new native OS/hardware qualification, no changes to existing distribution archives.
+</pre>

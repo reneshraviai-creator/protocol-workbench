@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "name": "Local Modbus Demo",
+  "connections": [
+    {
+      "id": "demo-server",
+      "name": "Local Modbus simulator",
+      "protocol": "modbus",
+      "host": "127.0.0.1",
+      "port": 15020,
+      "device_id": 1,
+      "timeout": 3,
+      "retry_seconds": 1,
+      "tags": [
+        {
+          "id": "temperature",
+          "tag": "Temperature",
+          "dtype": "Float",
+          "index": 1,
+          "address": 0,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "pressure",
+          "tag": "Pressure",
+          "dtype": "Float",
+          "index": 2,
+          "address": 2,
+          "area": "holding",
+          "order": "CDAB"
+        },
+        {
+          "id": "counter",
+          "tag": "Counter",
+          "dtype": "UInt16",
+          "index": 3,
+          "address": 4,
+          "area": "holding",
+          "order": "ABCD"
+        }
+      ]
+    },
+    {
+      "id": "demo-scan",
+      "name": "Local Modbus scanner",
+      "protocol": "modbus",
+      "host": "127.0.0.1",
+      "port": 15020,
+      "device_id": 1,
+      "timeout": 3,
+      "retry_seconds": 1,
+      "tags": [
+        {
+          "id": "temperature",
+          "tag": "Temperature",
+          "dtype": "Float",
+          "index": 1,
+          "address": 0,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "pressure",
+          "tag": "Pressure",
+          "dtype": "Float",
+          "index": 2,
+          "address": 2,
+          "area": "holding",
+          "order": "CDAB"
+        },
+        {
+          "id": "counter",
+          "tag": "Counter",
+          "dtype": "UInt16",
+          "index": 3,
+          "address": 4,
+          "area": "holding",
+          "order": "ABCD"
+        }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "id": "demo-server-job",
+      "name": "Modbus simulator server",
+      "kind": "server",
+      "connection": "demo-server",
+      "interval": 1,
+      "dynamic": true,
+      "simulation": {
+        "pattern": "ramp",
+        "minimum": 0,
+        "maximum": 100,
+        "period": 20
+      },
+      "tags": []
+    },
+    {
+      "id": "demo-scan-job",
+      "name": "Modbus scanner",
+      "kind": "scan",
+      "connection": "demo-scan",
+      "interval": 1,
+      "tags": []
+    }
+  ],
+  "settings": {
+    "autostart": false
+  }
+}

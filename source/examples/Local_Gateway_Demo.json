@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "name": "Local OPC UA \u2192 Modbus Gateway",
+  "connections": [
+    {
+      "id": "ua-local",
+      "name": "Local OPC UA source",
+      "protocol": "opcua",
+      "url": "opc.tcp://127.0.0.1:15420",
+      "security": "None",
+      "tags": [
+        {
+          "id": "temperature",
+          "tag": "Temperature",
+          "dtype": "Float",
+          "index": 1,
+          "nodeid": "ns=2;s=Temperature"
+        },
+        {
+          "id": "pressure",
+          "tag": "Pressure",
+          "dtype": "Float",
+          "index": 2,
+          "nodeid": "ns=2;s=Pressure"
+        }
+      ],
+      "timeout": 5,
+      "retry_seconds": 1
+    },
+    {
+      "id": "mb-local",
+      "name": "Local Modbus destination",
+      "protocol": "modbus",
+      "host": "127.0.0.1",
+      "port": 15021,
+      "device_id": 1,
+      "tags": [
+        {
+          "id": "mb-temperature",
+          "tag": "Temperature",
+          "dtype": "Float",
+          "index": 1,
+          "address": 0,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "mb-pressure",
+          "tag": "Pressure",
+          "dtype": "Float",
+          "index": 2,
+          "address": 2,
+          "area": "holding",
+          "order": "CDAB"
+        }
+      ],
+      "timeout": 5,
+      "retry_seconds": 1
+    }
+  ],
+  "jobs": [
+    {
+      "id": "ua-server",
+      "name": "OPC UA source simulator",
+      "kind": "server",
+      "connection": "ua-local",
+      "interval": 1,
+      "simulation": {
+        "pattern": "ramp",
+        "minimum": 0,
+        "maximum": 100,
+        "period": 20
+      },
+      "dynamic": true
+    },
+    {
+      "id": "mb-server",
+      "name": "Modbus destination server",
+      "kind": "server",
+      "connection": "mb-local",
+      "interval": 1,
+      "simulation": {
+        "pattern": "constant",
+        "value": 0
+      },
+      "dynamic": false
+    },
+    {
+      "id": "local-gateway",
+      "name": "OPC UA to Modbus route",
+      "kind": "gateway",
+      "connection": "mb-local",
+      "source": "ua-local",
+      "interval": 1,
+      "verify": true,
+      "mappings": [
+        {
+          "source": "temperature",
+          "destination": "mb-temperature",
+          "scale": 1,
+          "offset": 0
+        },
+        {
+          "source": "pressure",
+          "destination": "mb-pressure",
+          "scale": 2,
+          "offset": 0
+        }
+      ]
+    },
+    {
+      "id": "local-scan",
+      "name": "Modbus result scanner",
+      "kind": "scan",
+      "connection": "mb-local",
+      "interval": 1
+    }
+  ],
+  "settings": {
+    "autostart": false
+  }
+}

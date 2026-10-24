@@ -1,0 +1,11 @@
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.DS_Store
+/source/data/
+/Distribution*/
+*.zip
+*.sqlite3
+*.key
+*.pem
+.env

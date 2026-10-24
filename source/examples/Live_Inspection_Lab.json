@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "name": "Local OPC UA & Modbus inspection lab",
+  "connections": [
+    {
+      "id": "opcua",
+      "name": "Local OPC UA simulator",
+      "protocol": "opcua",
+      "tags": [
+        {
+          "id": "opcua_1",
+          "tag": "Point_0001",
+          "dtype": "Float",
+          "index": 1,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0001"
+        },
+        {
+          "id": "opcua_2",
+          "tag": "Point_0002",
+          "dtype": "Float",
+          "index": 2,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0002"
+        },
+        {
+          "id": "opcua_3",
+          "tag": "Point_0003",
+          "dtype": "Float",
+          "index": 3,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0003"
+        },
+        {
+          "id": "opcua_4",
+          "tag": "Point_0004",
+          "dtype": "Float",
+          "index": 4,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0004"
+        },
+        {
+          "id": "opcua_5",
+          "tag": "Point_0005",
+          "dtype": "Float",
+          "index": 5,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0005"
+        },
+        {
+          "id": "opcua_6",
+          "tag": "Point_0006",
+          "dtype": "Float",
+          "index": 6,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0006"
+        },
+        {
+          "id": "opcua_7",
+          "tag": "Point_0007",
+          "dtype": "Float",
+          "index": 7,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0007"
+        },
+        {
+          "id": "opcua_8",
+          "tag": "Point_0008",
+          "dtype": "Float",
+          "index": 8,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0008"
+        },
+        {
+          "id": "opcua_9",
+          "tag": "Point_0009",
+          "dtype": "Float",
+          "index": 9,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0009"
+        },
+        {
+          "id": "opcua_10",
+          "tag": "Point_0010",
+          "dtype": "Float",
+          "index": 10,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0010"
+        },
+        {
+          "id": "opcua_11",
+          "tag": "Point_0011",
+          "dtype": "Float",
+          "index": 11,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0011"
+        },
+        {
+          "id": "opcua_12",
+          "tag": "Point_0012",
+          "dtype": "Float",
+          "index": 12,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0012"
+        },
+        {
+          "id": "opcua_13",
+          "tag": "Point_0013",
+          "dtype": "Float",
+          "index": 13,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0013"
+        },
+        {
+          "id": "opcua_14",
+          "tag": "Point_0014",
+          "dtype": "Float",
+          "index": 14,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0014"
+        },
+        {
+          "id": "opcua_15",
+          "tag": "Point_0015",
+          "dtype": "Float",
+          "index": 15,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0015"
+        },
+        {
+          "id": "opcua_16",
+          "tag": "Point_0016",
+          "dtype": "Float",
+          "index": 16,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0016"
+        },
+        {
+          "id": "opcua_17",
+          "tag": "Point_0017",
+          "dtype": "Float",
+          "index": 17,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0017"
+        },
+        {
+          "id": "opcua_18",
+          "tag": "Point_0018",
+          "dtype": "Float",
+          "index": 18,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0018"
+        },
+        {
+          "id": "opcua_19",
+          "tag": "Point_0019",
+          "dtype": "Float",
+          "index": 19,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0019"
+        },
+        {
+          "id": "opcua_20",
+          "tag": "Point_0020",
+          "dtype": "Float",
+          "index": 20,
+          "units": "%",
+          "nodeid": "ns=2;s=Point_0020"
+        }
+      ],
+      "timeout": 5,
+      "retry_seconds": 2,
+      "url": "opc.tcp://127.0.0.1:15450",
+      "security": "None"
+    },
+    {
+      "id": "modbus",
+      "name": "Local Modbus TCP simulator",
+      "protocol": "modbus",
+      "tags": [
+        {
+          "id": "modbus_1",
+          "tag": "Point_0001",
+          "dtype": "Float",
+          "index": 1,
+          "units": "%",
+          "address": 0,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_2",
+          "tag": "Point_0002",
+          "dtype": "Float",
+          "index": 2,
+          "units": "%",
+          "address": 2,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_3",
+          "tag": "Point_0003",
+          "dtype": "Float",
+          "index": 3,
+          "units": "%",
+          "address": 4,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_4",
+          "tag": "Point_0004",
+          "dtype": "Float",
+          "index": 4,
+          "units": "%",
+          "address": 6,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_5",
+          "tag": "Point_0005",
+          "dtype": "Float",
+          "index": 5,
+          "units": "%",
+          "address": 8,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_6",
+          "tag": "Point_0006",
+          "dtype": "Float",
+          "index": 6,
+          "units": "%",
+          "address": 10,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_7",
+          "tag": "Point_0007",
+          "dtype": "Float",
+          "index": 7,
+          "units": "%",
+          "address": 12,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_8",
+          "tag": "Point_0008",
+          "dtype": "Float",
+          "index": 8,
+          "units": "%",
+          "address": 14,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_9",
+          "tag": "Point_0009",
+          "dtype": "Float",
+          "index": 9,
+          "units": "%",
+          "address": 16,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_10",
+          "tag": "Point_0010",
+          "dtype": "Float",
+          "index": 10,
+          "units": "%",
+          "address": 18,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_11",
+          "tag": "Point_0011",
+          "dtype": "Float",
+          "index": 11,
+          "units": "%",
+          "address": 20,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_12",
+          "tag": "Point_0012",
+          "dtype": "Float",
+          "index": 12,
+          "units": "%",
+          "address": 22,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_13",
+          "tag": "Point_0013",
+          "dtype": "Float",
+          "index": 13,
+          "units": "%",
+          "address": 24,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_14",
+          "tag": "Point_0014",
+          "dtype": "Float",
+          "index": 14,
+          "units": "%",
+          "address": 26,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_15",
+          "tag": "Point_0015",
+          "dtype": "Float",
+          "index": 15,
+          "units": "%",
+          "address": 28,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_16",
+          "tag": "Point_0016",
+          "dtype": "Float",
+          "index": 16,
+          "units": "%",
+          "address": 30,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_17",
+          "tag": "Point_0017",
+          "dtype": "Float",
+          "index": 17,
+          "units": "%",
+          "address": 32,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_18",
+          "tag": "Point_0018",
+          "dtype": "Float",
+          "index": 18,
+          "units": "%",
+          "address": 34,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_19",
+          "tag": "Point_0019",
+          "dtype": "Float",
+          "index": 19,
+          "units": "%",
+          "address": 36,
+          "area": "holding",
+          "order": "ABCD"
+        },
+        {
+          "id": "modbus_20",
+          "tag": "Point_0020",
+          "dtype": "Float",
+          "index": 20,
+          "units": "%",
+          "address": 38,
+          "area": "holding",
+          "order": "ABCD"
+        }
+      ],
+      "timeout": 5,
+      "retry_seconds": 2,
+      "host": "127.0.0.1",
+      "port": 15060,
+      "device_id": 1
+    }
+  ],
+  "jobs": [
+    {
+      "id": "opcua_server",
+      "name": "Local OPC UA simulator",
+      "kind": "server",
+      "connection": "opcua",
+      "interval": 1,
+      "dynamic": true,
+      "simulation": {
+        "pattern": "sine",
+        "minimum": 0,
+        "maximum": 100,
+        "period": 20,
+        "seed": 1
+      }
+    },
+    {
+      "id": "modbus_server",
+      "name": "Local Modbus TCP simulator",
+      "kind": "server",
+      "connection": "modbus",
+      "interval": 1,
+      "dynamic": true,
+      "simulation": {
+        "pattern": "sine",
+        "minimum": 0,
+        "maximum": 100,
+        "period": 20,
+        "seed": 1
+      }
+    }
+  ],
+  "settings": {
+    "autostart": false
+  }
+}
