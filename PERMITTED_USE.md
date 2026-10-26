@@ -1,6 +1,6 @@
 # Protocol Workbench — public preview permitted use
 
-Effective: 26 October 2026 · Publisher: Renesh Ravindran · Contact: renesh.ravi.ai@gmail.com
+Effective: 26 October 2026 · Publisher: reneshraviai-creator · Contact: https://github.com/reneshraviai-creator
 
 ## Limited evaluation permission
 

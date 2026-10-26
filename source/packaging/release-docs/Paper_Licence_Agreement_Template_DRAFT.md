@@ -7,8 +7,8 @@ Template version: 1 · Application: Protocol Workbench · Release(s): [identify 
 ## Agreement schedule
 | Field | To complete before issue |
 |---|---|
-| Licensor | Renesh Ravindran, acting personally; [address/details for counsel to confirm] |
-| Licensor contact | renesh.ravi.ai@gmail.com |
+| Licensor | GitHub: reneshraviai-creator; [contracting-party details to be completed privately before execution] |
+| Licensor contact | https://github.com/reneshraviai-creator |
 | Licensee legal name and registration details | [complete] |
 | Licensee address and authorised representative | [complete] |
 | Licence reference | [complete; match administrative app field] |

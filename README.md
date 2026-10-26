@@ -131,3 +131,7 @@ This is a **public clean export**. Original local Git history, personal runtime 
 The source is publicly visible and can be downloaded. This is not an open-source licence grant or a claim of production readiness. Read [PERMITTED_USE.md](PERMITTED_USE.md) before running the software. Limited, no-fee internal evaluation is permitted only on local simulators and isolated non-production test equipment. Commercial redistribution, resale, hosted services and production deployment are not granted by that permission. Third-party components retain their own licences and rights.
 
 The supplied paper licence agreement is an unexecuted template, not an issued contract. Existing separately agreed licences remain separate. Historical tags, source archives and package documentation may contain older wording; the current public overview and permitted-use notice clarify the current preview distribution.
+
+### Publisher attribution update — 26 October 2026
+
+Current licence notices identify publisher GitHub ID `reneshraviai-creator` and link to that GitHub profile. Preview 13 installer/documentation assets were refreshed for this attribution-only change, with new SHA-256 files. Existing source tags and older Git commits retain historical identity information; current main contains the updated notices. The original qualification evidence is historical, and the attribution revision has its own regression record.

@@ -5,7 +5,7 @@ from aiohttp import web
 from project_api import KEY as PROJECTS
 from version import VERSION,SOFTWARE_NAME
 
-DEFAULT={'licensed_organisation':'','licence_reference':'','licence_type':'Not configured','issue_date':'','expiry_date':'','licensed_user':'','publisher':'Renesh Ravindran','support_contact':'renesh.ravi.ai@gmail.com','revision':0}
+DEFAULT={'licensed_organisation':'','licence_reference':'','licence_type':'Not configured','issue_date':'','expiry_date':'','licensed_user':'','publisher':'reneshraviai-creator','support_contact':'https://github.com/reneshraviai-creator','revision':0}
 NOTICE='This software is provided under a commercial software licence agreement.\n\nUse of Protocol Workbench is subject to the terms and conditions of the licence agreement issued to the licensed organisation.\n\nUnauthorised copying, redistribution or commercial use may constitute a breach of the applicable licence agreement.'
 
 
