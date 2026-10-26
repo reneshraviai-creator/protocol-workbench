@@ -4,7 +4,7 @@
 
 Protocol Workbench brings a local browser interface and Python protocol services together in one application. Engineers can configure connections, create tags and registers, simulate test devices, monitor values, move data between endpoints and save repeatable test scenarios. It is intended for local simulators and isolated test equipment, not production or live operating environments.
 
-**Current packaged version: 2.0.0-preview.13 — Engineering Preview.** This private repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product or a public open-source release.
+**Current packaged version: 2.0.0-preview.13 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
 
 ## What an engineer can do
 
@@ -45,7 +45,7 @@ Open the matching release and expand **Assets** to download its packages, checks
 |---|---|---|
 | [Preview 13](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.13) | Security refresh, Preview 12 OPC UA import, revised packages and provisional hardware/VM specifications | Windows x64, macOS and Linux packages; preferred available preview |
 | [Preview 12](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.12) | Source-server browsing, tag selection, optional snapshots and independent local simulation | Source checkpoint and import guide only; no installer archives built |
-| [Preview 11](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.11) | Historical package baseline, including native Windows ARM64 and 32-bit archives | Legacy archive with unresolved dependency findings; not recommended for new installations |
+| [Preview 11](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.11) | Historical package baseline, including native Windows ARM64 and 32-bit archives | Installer downloads withdrawn due to unresolved dependency findings; source tag retained for history |
 
 ### Platform status for Preview 13
 
@@ -57,7 +57,7 @@ Open the matching release and expand **Assets** to download its packages, checks
 | Windows ARM64 | No refreshed Preview 13 package | Blocked by unavailable official cryptography 50.0.2 native wheel |
 | Windows 32-bit | No refreshed Preview 13 package | Blocked by unavailable official cryptography 50.0.2 win32 wheel |
 
-Windows x64 emulation on ARM is not qualified. The Preview 11 ARM64/32-bit archives remain historical and must not be mistaken for patched Preview 13 builds. All packages are unsigned archive installers, not MSI, DMG or DEB installers. Folder names containing “production release” are distribution labels, not production approval.
+Windows x64 emulation on ARM is not qualified. Preview 11 release assets have been withdrawn. No current patched Windows ARM64/32-bit installer is available. All packages are unsigned archive installers, not MSI, DMG or DEB installers. Folder names containing “production release” are distribution labels, not production approval.
 
 ## Installation overview
 
@@ -126,6 +126,8 @@ Read the launcher output for its actual local URL. For regression tests in a dis
 
 ## Privacy, ownership and distribution
 
-This is a **private clean export**. Original local Git history, personal runtime projects, accounts, credentials, recordings, backups, private engineering evidence and screenshots are excluded. The version tags preserve selected clean checkpoints; they do not expose the original development repository history.
+This is a **public clean export**. Original local Git history, personal runtime projects, accounts, credentials, recordings, backups, private engineering evidence and screenshots are excluded. The version tags preserve selected clean checkpoints; they do not expose the original development repository history.
 
-Private GitHub access is not code encryption: anyone granted repository access can read/download the included source. No new public/open-source licence is granted by this repository. Preserve included third-party notices; repository privacy does not override dependency licence obligations. Review the existing licensing materials before external redistribution.
+The source is publicly visible and can be downloaded. This is not an open-source licence grant or a claim of production readiness. Read [PERMITTED_USE.md](PERMITTED_USE.md) before running the software. Limited, no-fee internal evaluation is permitted only on local simulators and isolated non-production test equipment. Commercial redistribution, resale, hosted services and production deployment are not granted by that permission. Third-party components retain their own licences and rights.
+
+The supplied paper licence agreement is an unexecuted template, not an issued contract. Existing separately agreed licences remain separate. Historical tags, source archives and package documentation may contain older wording; the current public overview and permitted-use notice clarify the current preview distribution.
