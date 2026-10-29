@@ -6,11 +6,9 @@ Protocol Workbench brings a local browser interface and Python protocol services
 
 **Current packaged version: 2.0.0-preview.14 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
 
-## Windows EXE withdrawn
+## Available installers
 
-The unsigned Windows Setup.exe and its checksum were removed from public release downloads at the publisher’s request. **No signed EXE replacement is available.** The setup recipe and historical validation evidence remain for future signing/testing; they are not an available signed release.
-
-The Windows x64 ZIP archive is a separate **unsigned** distribution and remains available. macOS/Linux packages are unchanged. None of these packages is described as signed or production-qualified.
+Windows x64, macOS and Linux are distributed as **unsigned ZIP archive installers**. See the platform table and installation steps below. These packages are Engineering Previews.
 
 ## What an engineer can do
 

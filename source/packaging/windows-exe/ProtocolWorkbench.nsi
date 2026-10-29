@@ -120,7 +120,7 @@ Section "Protocol Workbench and Start menu shortcuts (required)" SecApp
  SetOutPath "$INSTDIR"
  DetailPrint "Extracting verified offline package..."
  File /r "${PACKAGE_ROOT}/*"
- File "Windows_EXE_Installation.html"
+ File "Installation.html"
  SetOutPath "$INSTDIR\installer-notices"
  File "notices/*"
  SetOutPath "$INSTDIR"
@@ -137,7 +137,7 @@ Section "Protocol Workbench and Start menu shortcuts (required)" SecApp
  CreateShortcut "$SMPROGRAMS\Protocol Workbench\Open Protocol Workbench.lnk" "$SYSDIR\cmd.exe" '/D /S /C ""$INSTDIR\Open App.bat""'
  CreateShortcut "$SMPROGRAMS\Protocol Workbench\Stop Protocol Workbench.lnk" "$SYSDIR\cmd.exe" '/D /S /C ""$INSTDIR\Stop App.bat""'
  CreateShortcut "$SMPROGRAMS\Protocol Workbench\Create Diagnostics.lnk" "$SYSDIR\cmd.exe" '/D /S /C ""$INSTDIR\Create Diagnostics.bat""'
- CreateShortcut "$SMPROGRAMS\Protocol Workbench\Installation Guide.lnk" "$INSTDIR\Windows_EXE_Installation.html"
+ CreateShortcut "$SMPROGRAMS\Protocol Workbench\Installation Guide.lnk" "$INSTDIR\Installation.html"
  CreateShortcut "$SMPROGRAMS\Protocol Workbench\Uninstall Protocol Workbench.lnk" "$INSTDIR\Uninstall.exe"
  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayName" "Protocol Workbench (Engineering Preview)"
  WriteRegStr HKCU "${UNINSTALL_KEY}" "DisplayVersion" "${APP_VERSION} (${SETUP_REVISION})"

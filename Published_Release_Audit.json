@@ -16,18 +16,6 @@
     },
     {
       "version": "v2.0.0-preview.14",
-      "asset": "EXE_Build_Info.json",
-      "sha256": "33d94c0571485831036a64028219a0c9971ea91797485c0305449dab781a0e1d",
-      "remote_digest": "PASS"
-    },
-    {
-      "version": "v2.0.0-preview.14",
-      "asset": "EXE_Payload_Verification.json",
-      "sha256": "00671e245095178ce8f7a1cb7ebb32881abfa8d6948ca299a7ce765799d9884b",
-      "remote_digest": "PASS"
-    },
-    {
-      "version": "v2.0.0-preview.14",
       "asset": "Installer_Repair_Validation.md",
       "sha256": "4f7c046fe309fecad3ef501dd3b70e25aed997170703b79793944f11122793db",
       "remote_digest": "PASS"
@@ -83,12 +71,6 @@
       "version": "v2.0.0-preview.14",
       "asset": "ProtocolWorkbench-2.0.0-preview.14-Windows-x64.zip.sha256",
       "sha256": "8876af9cb2652d781c9a92b9110fc103d260bfdcc4ce2c82e060829e4f3a1c11",
-      "remote_digest": "PASS"
-    },
-    {
-      "version": "v2.0.0-preview.14",
-      "asset": "Windows_EXE_Validation.md",
-      "sha256": "efec61b4e49a627b77de04d9a9a1ce6ccf7041d5c997ea8b3cccac7739852da5",
       "remote_digest": "PASS"
     },
     {
@@ -462,5 +444,7 @@
     "No antivirus approval, signing, production qualification or bug-free guarantee",
     "Windows ARM x64 emulation failed installation-folder rename; unsupported",
     "Intel Mac, Windows 32-bit and native Windows ARM64 not qualified"
-  ]
+  ],
+  "original_assets_audited": 16,
+  "subsequently_removed_obsolete_metadata_assets": 3
 }

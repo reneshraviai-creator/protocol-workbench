@@ -31,6 +31,6 @@ The first Linux container attempt used a no-execute temporary mount and failed t
 
 Preview 14 is the current installer release. Preview 11 and 13 installer downloads were withdrawn for previously recorded dependency/integrity issues; historical documentation and source tags are retained. Preview 12 has documentation/source only, with no packaged installer. GitHub's automatically generated historical source archives are not current installation recommendations.
 
-The unsigned EXE remains withdrawn, with **no signed EXE replacement**. Existing historical EXE reports do not constitute an available signed installer. Remaining ZIP installers are unsigned. Native Windows ARM64/32-bit packages remain unavailable; x64 emulation also failed installation on the tested ARM runner and is unsupported.
+Available ZIP installers are unsigned. Obsolete installer-wrapper documentation and metadata have been removed from the current release assets and public overview. Native Windows ARM64/32-bit packages remain unavailable; x64 emulation also failed installation on the tested ARM runner and is unsupported.
 
 Not established by this audit: Intel Mac compatibility, all Linux distributions/Windows editions, physical PLC or USB/RS-485 interoperability, long-duration endurance, every GUI workflow, security-product acceptance or independent security review. Use current versioned instructions and checksums. An acknowledgement of a protocol write does not prove physical-process delivery.
