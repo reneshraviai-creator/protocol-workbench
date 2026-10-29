@@ -38,7 +38,8 @@ def audit(target,url,digest,workspace,output):
   environment=os.environ.copy()
   # PowerShell 7's module path is incompatible with child Windows PowerShell 5.1.
   # Let the latter construct its standard module path, as in Explorer/cmd launches.
-  if sys.platform=='win32':environment.pop('PSModulePath',None)
+  if sys.platform=='win32':
+   environment={key:value for key,value in environment.items() if key.casefold()!='psmodulepath'}
   result=subprocess.run([str(x) for x in args],env=environment,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=timeout)
   print('CHECK:',name,'exit',result.returncode,flush=True)
   print(result.stdout[-14000:],flush=True)
