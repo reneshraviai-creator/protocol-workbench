@@ -1,4 +1,4 @@
-# Release notes — 2.0.0-preview.13
+# Release notes — 2.0.0-preview.14
 
 Engineering Preview: dependency remediation and refreshed package preparation, not a commercial readiness certificate.
 
@@ -9,3 +9,18 @@ Includes Preview 12's OPC UA server-to-simulation import, all existing protocol/
 Prepared package targets: Windows x64 offline runtime; macOS and Linux online virtual-environment installers. Native Windows ARM64 and win32 are BLOCKED: official cryptography 50.0.2 wheels are unavailable. No old affected package is relabelled as patched. No emulation qualification is claimed. Default packaged dashboard port 8878 stays separate from development 8877.
 
 Archives are unsigned, not MSI/DMG/DEB images. Native Windows/Linux, physical PLC/RTU, long-duration endurance and independent security acceptance remain outstanding. A zero-match PyPI advisory scan is not a full-system vulnerability certificate. Current running development app and old distribution archives are unchanged. No publishing or main application upgrade was performed.
+
+
+## Windows installer reliability — Preview 14
+
+Preview 14 rebuilds complete archives after the publisher-attribution edit so every internal manifest entry matches the final packaged file. Do not patch or replace files inside an existing ZIP manually.
+
+1. Download the Preview 14 Windows x64 ZIP and its matching .sha256 file. Native Windows ARM64/32-bit packages are still unavailable.
+2. Right-click the ZIP → Extract All into a permanent, short folder such as C:\PW. Do not launch from the ZIP preview or its temporary extraction folder.
+3. Run Check Package.bat. This uses built-in Windows PowerShell and SHA-256 to check the package before bundled Python is launched, including when that Python file is missing. The checksum manifest detects missing/changed files; it is not an antivirus certification or a digital signature.
+4. Run Check Runtime.bat, then Install.bat, then Open App.bat. Run only the entry scripts; Run Workbench.bat is their shared helper. PowerShell must be available and allowed by organisational policy; no execution-policy override is supplied.
+5. If a step fails, retain the log shown by the script. Logs are saved outside the extraction folder under %LOCALAPPDATA%\ProtocolWorkbenchInstallerLogs. These local logs can contain paths and error details; review/redact before sharing. If logging cannot be created, retain the console output.
+6. If files disappear, open Windows Security → Virus & threat protection → Protection history, or your antivirus quarantine/history, and collect the detection name, affected path and action. Do not disable protection, add exclusions or restore flagged files without investigation. Installer changes cannot override quarantine or prove a detection is false.
+7. Existing installed projects/data are preserved when package preflight fails. Before upgrading, export/back up current work and stop tests. Closing the browser does not stop the application.
+
+These wrappers use readable commands, not encoded scripts, hidden downloads, Defender changes or execution-policy bypasses. Native Windows execution and actual security-product acceptance remain NOT TESTED on the Mac build host. A signed Windows-native installer and vendor false-positive investigation, when justified by evidence, remain separate work; no signing certificate is available in this build.

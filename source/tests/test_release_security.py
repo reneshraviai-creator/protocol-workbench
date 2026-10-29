@@ -37,4 +37,4 @@ def test_installer_archive_and_app_share_runtime_identity():
  import ast
  version=next(ast.literal_eval(n.value) for n in ast.parse((ROOT/'app/version.py').read_text()).body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='VERSION' for t in n.targets))
  assert builder.VERSION==setup.VERSION==version
- assert builder.OUT.name=='Distribution-Security-Preview13' and builder.SUPPORTED_TARGETS==('Windows-x64','macOS','Linux')
+ assert builder.OUT.name=='Distribution-Installer-Preview14' and builder.SUPPORTED_TARGETS==('Windows-x64','macOS','Linux')

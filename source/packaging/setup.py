@@ -1,5 +1,5 @@
 """Per-user preview installer. Never targets the existing development installation."""
-import argparse,hashlib,json,os,platform,shutil,struct,subprocess,sys,time,uuid,zipfile
+import argparse,hashlib,json,os,platform,shutil,struct,subprocess,sys,time,uuid,zipfile,traceback,tempfile,re
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
 # Read the same literal version as the application; never execute the source.
@@ -40,18 +40,40 @@ def invoke(prefix,action,no_ui=True):
  if no_ui:args.append('--no-ui')
  subprocess.run(args,env=env,check=True)
 
+def verify_package(root):
+ root=Path(root).resolve()
+ manifest_path=root/'SHA256SUMS.txt'
+ if not manifest_path.is_file():raise ValueError('Package manifest is missing. Extract All files into a permanent folder; check antivirus quarantine if files disappear.')
+ manifest=set()
+ for line in manifest_path.read_text(encoding='utf-8').splitlines():
+  match=re.fullmatch(r'([0-9a-fA-F]{64})  (.+)',line)
+  if not match:raise ValueError('Invalid package manifest entry')
+  digest,name=match.groups();path=(root/name).resolve()
+  if Path(name).is_absolute() or not path.is_relative_to(root) or name in manifest:raise ValueError('Invalid or duplicate package manifest path')
+  manifest.add(name)
+  if not path.is_file():raise ValueError('Package is incomplete: '+name+'. Use Extract All into a short folder such as C:\\PW, then run Install.bat outside the ZIP. Check Windows Security Protection history or antivirus quarantine if files disappear; do not disable protection.')
+  if hashlib.sha256(path.read_bytes()).hexdigest().lower()!=digest.lower():raise ValueError('Package checksum mismatch: '+name+'. Obtain a complete verified replacement; do not run this copy.')
+ required={p.relative_to(root).as_posix() for p in (root/'payload').rglob('*') if p.is_file()}
+ if (root/'runtime').exists():required.update(p.relative_to(root).as_posix() for p in (root/'runtime').rglob('*') if p.is_file() and '__pycache__' not in p.parts and p.suffix not in ('.pyc','.pyo'))
+ if (root/'setup.py').is_file():required.add('setup.py')
+ if not required or not required.issubset(manifest):raise ValueError('Package manifest does not cover every payload/runtime file')
+ return len(manifest)
+
+
+def write_failure_log(error):
+ # Local-only logs outside the downloaded/extracted package survive its removal.
+ folder=(Path(os.environ.get('LOCALAPPDATA',tempfile.gettempdir()))/'ProtocolWorkbenchInstallerLogs') if os.name=='nt' else Path(tempfile.gettempdir())/'ProtocolWorkbenchInstallerLogs'
+ try:
+  folder.mkdir(parents=True,exist_ok=True)
+  path=folder/('installer-error-'+time.strftime('%Y%m%d-%H%M%S')+'-'+uuid.uuid4().hex[:6]+'.log')
+  path.write_text('Protocol Workbench '+VERSION+' installer/control failure\n'+''.join(traceback.format_exception(error)),encoding='utf-8')
+  return path
+ except OSError:return None
+
 def install(prefix,port,offline=False):
  if not 1024<=port<=65535:raise ValueError('Port must be 1024..65535')
  if not (HERE/'payload/app/server.py').is_file():raise ValueError('Run setup from the extracted installation package')
- # Validate payload integrity before installing executable code.
- manifest=set()
- for line in (HERE/'SHA256SUMS.txt').read_text().splitlines():
-  digest,name=line.split('  ',1);path=(HERE/name).resolve();manifest.add(name)
-  if not path.is_relative_to(HERE):raise ValueError('Invalid package manifest path')
-  if not path.is_file():raise ValueError('Package is incomplete: '+name+'. Use Extract All into a short folder such as C:\\PW, then run Install.bat outside the ZIP.')
-  if hashlib.sha256(path.read_bytes()).hexdigest()!=digest:raise ValueError('Package checksum mismatch: '+name)
- required={p.relative_to(HERE).as_posix() for p in (HERE/'payload').rglob('*') if p.is_file()}
- if not required or not required.issubset(manifest):raise ValueError('Package manifest does not cover every payload file')
+ verify_package(HERE)
  prefix.mkdir(parents=True,exist_ok=True)
  if prefix.resolve()==HERE or prefix.resolve().is_relative_to(HERE/'payload'):raise ValueError('Choose an installation folder outside the extracted package')
  if not (prefix/'install.json').exists() and any(p.name!='installation.lock' for p in prefix.iterdir()):raise ValueError('Choose an empty dedicated installation folder; existing non-installation files will not be modified')
@@ -91,7 +113,7 @@ def release_paths(prefix,config):
  release=config.get('release','');relative=config.get('python','')
  if not isinstance(release,str) or not release.startswith('r-') or '/' in release or '\\' in release or '..' in release:raise ValueError('Invalid installed release metadata')
  base=(prefix/'versions'/release).resolve();python=Path(os.path.abspath(base/relative))
- if not python.is_relative_to(base) or not python.is_file() or not (base/'app/server.py').is_file():raise ValueError('Installed release/runtime is missing or invalid')
+ if not python.is_relative_to(base) or not python.is_file() or not (base/'app/server.py').is_file():raise ValueError('Installed release/runtime is missing or invalid. Files may be incomplete or removed; check antivirus Protection history/quarantine. Saved projects are not deleted by this check.')
  return base,python
 
 def validate_installation(prefix):
@@ -167,6 +189,10 @@ def main():
    elif a.action=='validate':validate_installation(prefix)
    elif a.action=='diagnostics':print(diagnostic_package(prefix))
    else:invoke(prefix,a.action,a.no_ui or a.action!='start')
- except Exception as error:print('ERROR:',error,file=sys.stderr);return 1
+ except Exception as error:
+  print('ERROR:',error,file=sys.stderr)
+  log=write_failure_log(error)
+  if log:print('Diagnostic log saved to:',log,file=sys.stderr)
+  return 1
  return 0
 if __name__=='__main__':sys.exit(main())

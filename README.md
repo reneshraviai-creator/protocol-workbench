@@ -4,7 +4,7 @@
 
 Protocol Workbench brings a local browser interface and Python protocol services together in one application. Engineers can configure connections, create tags and registers, simulate test devices, monitor values, move data between endpoints and save repeatable test scenarios. It is intended for local simulators and isolated test equipment, not production or live operating environments.
 
-**Current packaged version: 2.0.0-preview.13 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
+**Current packaged version: 2.0.0-preview.14 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
 
 ## What an engineer can do
 
@@ -43,19 +43,20 @@ Open the matching release and expand **Assets** to download its packages, checks
 
 | Version | Contents | Availability |
 |---|---|---|
-| [Preview 13](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.13) | Security refresh, Preview 12 OPC UA import, revised packages and provisional hardware/VM specifications | Windows x64, macOS and Linux packages; preferred available preview |
+| [Preview 14](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.14) | Installer integrity repair, Windows preflight and persistent failure logs | Windows x64, macOS and Linux packages; current available preview |
+| [Preview 13](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.13) | Security refresh, Preview 12 OPC UA import, revised packages and provisional hardware/VM specifications | Historical build; installer downloads withdrawn after attribution-update manifest mismatch |
 | [Preview 12](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.12) | Source-server browsing, tag selection, optional snapshots and independent local simulation | Source checkpoint and import guide only; no installer archives built |
 | [Preview 11](https://github.com/reneshraviai-creator/protocol-workbench/releases/tag/v2.0.0-preview.11) | Historical package baseline, including native Windows ARM64 and 32-bit archives | Installer downloads withdrawn due to unresolved dependency findings; source tag retained for history |
 
-### Platform status for Preview 13
+### Platform status for Preview 14
 
 | Target | Package/runtime | Recorded qualification |
 |---|---|---|
 | Windows x64 | Offline ZIP with bundled architecture-specific Python and dependencies | Static package checks passed; native Windows execution not tested |
 | macOS | ZIP installer; existing Python 3.11–3.14; internet for pinned dependency installation | Native Apple Silicon install/start/stop, upgrade and rollback checked; Intel Mac untested |
 | Linux | ZIP installer; existing Python 3.11–3.14 and venv; internet for installation | Static checks and x64/ARM64 dependency-wheel resolution passed; native execution not tested |
-| Windows ARM64 | No refreshed Preview 13 package | Blocked by unavailable official cryptography 50.0.2 native wheel |
-| Windows 32-bit | No refreshed Preview 13 package | Blocked by unavailable official cryptography 50.0.2 win32 wheel |
+| Windows ARM64 | No refreshed package | Blocked by unavailable official cryptography 50.0.2 native wheel |
+| Windows 32-bit | No refreshed package | Blocked by unavailable official cryptography 50.0.2 win32 wheel |
 
 Windows x64 emulation on ARM is not qualified. Preview 11 release assets have been withdrawn. No current patched Windows ARM64/32-bit installer is available. All packages are unsigned archive installers, not MSI, DMG or DEB installers. Folder names containing “production release” are distribution labels, not production approval.
 
@@ -63,7 +64,7 @@ Windows x64 emulation on ARM is not qualified. Preview 11 release assets have be
 
 Always download the package for the actual operating-system architecture, extract the entire ZIP and read the included installation guide. Do not run scripts from inside a compressed ZIP or its temporary preview directory.
 
-- **Windows x64:** extract to a short path such as `C:\PW`; run `Check Runtime.bat`, then `Install.bat`, then `Open App.bat`. No separate Python installation is required by this package.
+- **Windows x64:** extract to a short path such as `C:\PW`; run `Check Package.bat`, then `Check Runtime.bat`, then `Install.bat`, then `Open App.bat`. No separate Python installation is required by this package.
 - **macOS:** install/select Python 3.11–3.14, open Terminal in the extracted package, run `sh Install.command`, then `sh "Open App.command"`.
 - **Linux:** provide Python 3.11–3.14 with venv, open a terminal in the extracted package, run `sh Install.sh`, then `sh "Open App.sh"`.
 
@@ -135,3 +136,7 @@ The supplied paper licence agreement is an unexecuted template, not an issued co
 ### Publisher attribution update — 26 October 2026
 
 Current licence notices identify publisher GitHub ID `reneshraviai-creator` and link to that GitHub profile. Preview 13 installer/documentation assets were refreshed for this attribution-only change, with new SHA-256 files. Existing source tags and older Git commits retain historical identity information; current main contains the updated notices. The original qualification evidence is historical, and the attribution revision has its own regression record.
+
+### Installer reliability repair — Preview 14
+
+Preview 14 passed **697 regression tests, 0 failed** in the isolated Mac environment. The attribution-only archive refresh left stale internal manifest entries; Preview 14 rebuilds all archives from final source so the manifest matches every packaged file. Windows entry scripts check SHA-256 with built-in PowerShell before launching Python, report missing files and save logs under `%LOCALAPPDATA%\ProtocolWorkbenchInstallerLogs`. No antivirus exclusions, protection changes, encoded commands or execution-policy overrides are used. This corrects a confirmed integrity/install failure; it does not establish why a folder disappeared or guarantee antivirus acceptance. Check Protection history if a file is quarantined. Native Windows execution remains untested.

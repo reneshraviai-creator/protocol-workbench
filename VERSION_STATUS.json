@@ -1,7 +1,7 @@
 {
-  "version": "2.0.0-preview.13",
+  "version": "2.0.0-preview.14",
   "classification": "Engineering Preview",
-  "comments": "Security refresh with aiohttp 3.14.5 and cryptography 50.0.2; 688 tests passed in the recorded Mac environment. Windows x64/macOS/Linux archives available; native Windows ARM64/x86 patched builds blocked.",
+  "comments": "Installer reliability repair: complete final manifests, Windows package preflight independent of bundled Python, persistent logs. Native Windows execution and security-product acceptance remain untested.",
   "clean_export": true,
   "original_git_history_included": false,
   "user_data_included": false

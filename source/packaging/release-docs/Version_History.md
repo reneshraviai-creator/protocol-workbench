@@ -17,3 +17,7 @@ Read-only server inventory and optional snapshots create independent stopped loc
 | 2.0.0-preview.11 | Packages current source plus paper-licence notice, administrative metadata, validation/upgrade/rollback/diagnostics and current guides. |
 
 The running application and packaged setup identify preview.11 explicitly. Prior source checkpoints remain recoverable locally. No final Commercial Release classification has been made. Phase12 is the remaining qualification stage, not part of this package milestone.
+
+
+## 2.0.0-preview.14 — 29 October 2026
+Installer reliability repair: regenerate final manifests after attribution changes; Windows package preflight independent of bundled Python, persistent diagnostic logs and explicit missing/quarantined-file guidance. No antivirus bypass or native Windows qualification claimed.

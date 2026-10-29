@@ -22,7 +22,7 @@ The in-application commercial licence-information notice predates this public ev
 
 ## Historical downloads and qualification
 
-Preview 11 release assets have been withdrawn because of unresolved dependency findings. Historical source tags remain available for inspection and are not recommended as install targets. Preview 12 is source-only. Preview 13 is the recommended available preview, with Windows x64/macOS/Linux packages; native Windows ARM64 and 32-bit refreshed builds are unavailable. Native Windows/Linux execution, Intel Mac, physical PLC/RTU and extended endurance remain unqualified.
+Preview 11 release assets have been withdrawn because of unresolved dependency findings. Historical source tags remain available for inspection and are not recommended as install targets. Preview 12 is source-only. Preview 13 installer assets were withdrawn after an internal manifest mismatch in the attribution refresh. Preview 14 repairs those manifests and is the current available preview, with Windows x64/macOS/Linux packages; native Windows ARM64 and 32-bit refreshed builds are unavailable. Native Windows/Linux execution, Intel Mac, physical PLC/RTU and extended endurance remain unqualified.
 
 ## References
 
