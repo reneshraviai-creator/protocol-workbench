@@ -58,13 +58,13 @@ Open the matching release and expand **Assets** to download its packages, checks
 
 | Target | Package/runtime | Recorded qualification |
 |---|---|---|
-| Windows x64 | Offline ZIP with bundled architecture-specific Python and dependencies | Static package checks passed; native Windows execution not tested |
+| Windows x64 | Offline ZIP with bundled architecture-specific Python and dependencies | Published ZIP lifecycle and local OPC UA/Modbus checks passed on Windows Server 2022 x64 |
 | macOS | ZIP installer; existing Python 3.11–3.14; internet for pinned dependency installation | Native Apple Silicon install/start/stop, upgrade and rollback checked; Intel Mac untested |
-| Linux | ZIP installer; existing Python 3.11–3.14 and venv; internet for installation | Static checks and x64/ARM64 dependency-wheel resolution passed; native execution not tested |
+| Linux | ZIP installer; existing Python 3.11–3.14 and venv; internet for installation | Published ZIP lifecycle and local OPC UA/Modbus checks passed on Ubuntu 24.04 x64 and ARM64 |
 | Windows ARM64 | No refreshed package | Blocked by unavailable official cryptography 50.0.2 native wheel |
 | Windows 32-bit | No refreshed package | Blocked by unavailable official cryptography 50.0.2 win32 wheel |
 
-Windows x64 emulation on ARM is not qualified. Preview 11 release assets have been withdrawn. No current patched Windows ARM64/32-bit installer is available. All packages are unsigned archive installers, not MSI, DMG or DEB installers. Folder names containing “production release” are distribution labels, not production approval.
+The x64 ZIP failed installation under Windows 11 ARM64 x64 emulation on a hosted runner (WinError 5 during the final directory rename). Windows on ARM, including Parallels on Apple Silicon, is unsupported in this release. Preview 11 release assets have been withdrawn. No current patched Windows ARM64/32-bit installer is available. All packages are unsigned archive installers, not MSI, DMG or DEB installers. Folder names containing “production release” are distribution labels, not production approval.
 
 ## Installation overview
 
@@ -90,7 +90,7 @@ Preview 13 recorded **688 automated tests passed, 0 failed** in the patched Mac 
 
 Preview 13 pins aiohttp 3.14.5 and cryptography 50.0.2. Dated OSV checks returned zero PyPI advisory matches for the assessed dependency targets. This does not cover every OS/CPython/system OpenSSL vulnerability or certify security. Preview 11 retains known dependency findings.
 
-Outstanding gates include native Windows/Linux execution, Intel Mac, physical PLC/serial interoperability, long-duration endurance and independent acceptance/security review. A successful protocol write acknowledgement alone does not prove physical-process delivery. Stop cancels further application work but cannot undo a write already sent.
+Outstanding gates include Intel Mac, physical PLC/serial interoperability, long-duration endurance and independent acceptance/security review. A successful protocol write acknowledgement alone does not prove physical-process delivery. Stop cancels further application work but cannot undo a write already sent.
 
 ## Documentation
 
@@ -145,4 +145,8 @@ Current licence notices identify publisher GitHub ID `reneshraviai-creator` and 
 
 ### Installer reliability repair — Preview 14
 
-Preview 14 passed **697 regression tests, 0 failed** in the isolated Mac environment. The attribution-only archive refresh left stale internal manifest entries; Preview 14 rebuilds all archives from final source so the manifest matches every packaged file. Windows entry scripts check SHA-256 with built-in PowerShell before launching Python, report missing files and save logs under `%LOCALAPPDATA%\ProtocolWorkbenchInstallerLogs`. No antivirus exclusions, protection changes, encoded commands or execution-policy overrides are used. This corrects a confirmed integrity/install failure; it does not establish why a folder disappeared or guarantee antivirus acceptance. Check Protection history if a file is quarantined. Native Windows execution remains untested.
+Preview 14 passed **697 regression tests, 0 failed** in the isolated Mac environment. The attribution-only archive refresh left stale internal manifest entries; Preview 14 rebuilds all archives from final source so the manifest matches every packaged file. Windows entry scripts check SHA-256 with built-in PowerShell before launching Python, report missing files and save logs under `%LOCALAPPDATA%\ProtocolWorkbenchInstallerLogs`. No antivirus exclusions, protection changes, encoded commands or execution-policy overrides are used. This corrects a confirmed integrity/install failure; it does not establish why a folder disappeared or guarantee antivirus acceptance. Check Protection history if a file is quarantined. Native Windows and Linux package lifecycle checks subsequently passed; see the [published release audit](Published_Release_Audit.md) for environments, evidence and limits.
+
+## Published-download acceptance audit
+
+All 16 original release assets passed integrity checks. Current Preview 14 archives on their supported targets passed fresh install, localhost OPC UA/Modbus validation, GUI bootstrap, upgrade, rollback and uninstall checks on the recorded platforms. **712 regression tests passed.** See the [detailed audit](Published_Release_Audit.md) and [machine-readable evidence](Published_Release_Audit.json). These results do not imply production qualification, antivirus approval or a defect-free guarantee.

@@ -1,7 +1,7 @@
 {
   "version": "2.0.0-preview.14",
   "classification": "Engineering Preview",
-  "comments": "Installer reliability repair: complete final manifests, Windows package preflight independent of bundled Python, persistent logs. Native Windows execution and security-product acceptance remain untested.",
+  "comments": "Published Preview 14 package lifecycle/local OPC UA and Modbus acceptance passed on Mac Apple Silicon, Windows x64, and Ubuntu 24.04 x64/ARM64. See Published_Release_Audit.md for scope and limits. Unsigned EXE withdrawn; remaining ZIP archives unsigned.",
   "clean_export": true,
   "original_git_history_included": false,
   "user_data_included": false

@@ -1,0 +1,466 @@
+{
+  "version": "2.0.0-preview.14",
+  "audit_date": "2026-10-30",
+  "classification": "Engineering Preview",
+  "regression": {
+    "passed": 712,
+    "failed": 0,
+    "warnings": 361
+  },
+  "integrity_audit": [
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "Distribution_Manifest.json",
+      "sha256": "d2e35b3d499d8f57174d9a0b5cd784188576fae082d4cdec7fc879a2ba320273",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "EXE_Build_Info.json",
+      "sha256": "33d94c0571485831036a64028219a0c9971ea91797485c0305449dab781a0e1d",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "EXE_Payload_Verification.json",
+      "sha256": "00671e245095178ce8f7a1cb7ebb32881abfa8d6948ca299a7ce765799d9884b",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "Installer_Repair_Validation.md",
+      "sha256": "4f7c046fe309fecad3ef501dd3b70e25aed997170703b79793944f11122793db",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-Documentation.zip",
+      "sha256": "39c41d79de6175b5df59da4c2efa9d8e8fea7bf2908a3613406be552f7e96a6f",
+      "remote_digest": "PASS",
+      "classification": "documentation ZIP",
+      "crc": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-Linux.zip",
+      "sha256": "73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e",
+      "remote_digest": "PASS",
+      "internal_manifest": "PASS",
+      "files": 221,
+      "crc": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-Linux.zip.sha256",
+      "sha256": "43dcb3f02541dc43ec018d92f260e02ab390c1c9fdcd4c91b83513128987ff98",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-macOS.zip",
+      "sha256": "7f8364715fd2770c922c663202f002286eda47810d80aed8810e4b2a8158bb0a",
+      "remote_digest": "PASS",
+      "internal_manifest": "PASS",
+      "files": 221,
+      "crc": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-macOS.zip.sha256",
+      "sha256": "a66864b3bfaaec5b9aaa4ab42a2f91994648d1229834f61e0a9de686223822d6",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-Windows-x64.zip",
+      "sha256": "7298c6e9c5ebc55a48cc8d314211a70556d67ee7e8c488fcd5eebb500d96c9f6",
+      "remote_digest": "PASS",
+      "internal_manifest": "PASS",
+      "files": 1971,
+      "crc": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "ProtocolWorkbench-2.0.0-preview.14-Windows-x64.zip.sha256",
+      "sha256": "8876af9cb2652d781c9a92b9110fc103d260bfdcc4ce2c82e060829e4f3a1c11",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.14",
+      "asset": "Windows_EXE_Validation.md",
+      "sha256": "efec61b4e49a627b77de04d9a9a1ce6ccf7041d5c997ea8b3cccac7739852da5",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.13",
+      "asset": "Identity_Revision_Validation.md",
+      "sha256": "b704c080a1667329277d2c08548f4cca8507444661b1181c1086def2659913ee",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.13",
+      "asset": "Qualification_Report.md",
+      "sha256": "0ad461cea995ff20464f3c67cc10d8cd03ed192f004a1b578f4a2f4c456bc12f",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.13",
+      "asset": "Qualification_Summary.json",
+      "sha256": "4ee64315b4ae7d7aeb33881142ba430399e4f786fe63b449449ec66efefa8efb",
+      "remote_digest": "PASS"
+    },
+    {
+      "version": "v2.0.0-preview.12",
+      "asset": "OPC_UA_Server_Import_Guide.html",
+      "sha256": "9946f7979dc89ddb31ab98c25bbd15e4aa58ac047eb9b1c879d6797269519815",
+      "remote_digest": "PASS"
+    }
+  ],
+  "native_reports": {
+    "Linux-ARM64": {
+      "target": "Linux-ARM64",
+      "platform": "linux",
+      "machine": "aarch64",
+      "runner_arch": "ARM64",
+      "package_sha256": "73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 0
+        },
+        {
+          "name": "installed runtime and local OPC UA/Modbus validation",
+          "exit_code": 0
+        },
+        {
+          "name": "background app start",
+          "exit_code": 0
+        },
+        {
+          "name": "installed GUI bootstrap version",
+          "exit_code": 0
+        },
+        {
+          "name": "background app stop",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade with data backup",
+          "exit_code": 0
+        },
+        {
+          "name": "rollback release and matching data",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application start",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application stop",
+          "exit_code": 0
+        },
+        {
+          "name": "uninstall program while retaining data",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade/rollback/uninstall data retention",
+          "exit_code": 0
+        }
+      ],
+      "status": "PASS",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "completed_utc": "2026-10-29T16:56:17Z"
+    },
+    "Windows-x64": {
+      "target": "Windows-x64",
+      "platform": "win32",
+      "machine": "AMD64",
+      "runner_arch": "X64",
+      "package_sha256": "7298c6e9c5ebc55a48cc8d314211a70556d67ee7e8c488fcd5eebb500d96c9f6",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "Windows PowerShell package preflight",
+          "exit_code": 0
+        },
+        {
+          "name": "Windows bundled runtime imports",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 0
+        },
+        {
+          "name": "installed runtime and local OPC UA/Modbus validation",
+          "exit_code": 0
+        },
+        {
+          "name": "background app start",
+          "exit_code": 0
+        },
+        {
+          "name": "installed GUI bootstrap version",
+          "exit_code": 0
+        },
+        {
+          "name": "background app stop",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade with data backup",
+          "exit_code": 0
+        },
+        {
+          "name": "rollback release and matching data",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application start",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application stop",
+          "exit_code": 0
+        },
+        {
+          "name": "uninstall program while retaining data",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade/rollback/uninstall data retention",
+          "exit_code": 0
+        }
+      ],
+      "status": "PASS",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "completed_utc": "2026-10-29T16:56:16Z"
+    },
+    "Windows-11-ARM64-x64-emulation": {
+      "target": "Windows-11-ARM64-x64-emulation",
+      "platform": "win32",
+      "machine": "ARM64",
+      "runner_arch": "ARM64",
+      "package_sha256": "7298c6e9c5ebc55a48cc8d314211a70556d67ee7e8c488fcd5eebb500d96c9f6",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "Windows PowerShell package preflight",
+          "exit_code": 0
+        },
+        {
+          "name": "Windows bundled runtime imports",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 1
+        }
+      ],
+      "status": "FAIL",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "error": "RuntimeError: fresh installation with isolated protocol self-tests failed",
+      "completed_utc": "2026-10-29T16:58:48Z"
+    },
+    "Linux-x64": {
+      "target": "Linux-x64",
+      "platform": "linux",
+      "machine": "x86_64",
+      "runner_arch": "X64",
+      "package_sha256": "73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 0
+        },
+        {
+          "name": "installed runtime and local OPC UA/Modbus validation",
+          "exit_code": 0
+        },
+        {
+          "name": "background app start",
+          "exit_code": 0
+        },
+        {
+          "name": "installed GUI bootstrap version",
+          "exit_code": 0
+        },
+        {
+          "name": "background app stop",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade with data backup",
+          "exit_code": 0
+        },
+        {
+          "name": "rollback release and matching data",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application start",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application stop",
+          "exit_code": 0
+        },
+        {
+          "name": "uninstall program while retaining data",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade/rollback/uninstall data retention",
+          "exit_code": 0
+        }
+      ],
+      "status": "PASS",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "completed_utc": "2026-10-29T16:56:19Z"
+    },
+    "macOS-Apple-Silicon": {
+      "target": "macOS-Apple-Silicon",
+      "platform": "darwin",
+      "machine": "arm64",
+      "runner_arch": "local",
+      "package_sha256": "7f8364715fd2770c922c663202f002286eda47810d80aed8810e4b2a8158bb0a",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 0
+        },
+        {
+          "name": "installed runtime and local OPC UA/Modbus validation",
+          "exit_code": 0
+        },
+        {
+          "name": "background app start",
+          "exit_code": 0
+        },
+        {
+          "name": "installed GUI bootstrap version",
+          "exit_code": 0
+        },
+        {
+          "name": "background app stop",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade with data backup",
+          "exit_code": 0
+        },
+        {
+          "name": "rollback release and matching data",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application start",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application stop",
+          "exit_code": 0
+        },
+        {
+          "name": "uninstall program while retaining data",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade/rollback/uninstall data retention",
+          "exit_code": 0
+        }
+      ],
+      "status": "PASS",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "completed_utc": "2026-10-29T16:36:38Z"
+    },
+    "Linux-ARM64-container-executable": {
+      "target": "Linux-ARM64-container",
+      "platform": "linux",
+      "machine": "aarch64",
+      "runner_arch": "local",
+      "package_sha256": "73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e",
+      "checks": [
+        {
+          "name": "download/CRC/complete internal manifest",
+          "exit_code": 0
+        },
+        {
+          "name": "fresh installation with isolated protocol self-tests",
+          "exit_code": 0
+        },
+        {
+          "name": "installed runtime and local OPC UA/Modbus validation",
+          "exit_code": 0
+        },
+        {
+          "name": "background app start",
+          "exit_code": 0
+        },
+        {
+          "name": "installed GUI bootstrap version",
+          "exit_code": 0
+        },
+        {
+          "name": "background app stop",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade with data backup",
+          "exit_code": 0
+        },
+        {
+          "name": "rollback release and matching data",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application start",
+          "exit_code": 0
+        },
+        {
+          "name": "rolled-back application stop",
+          "exit_code": 0
+        },
+        {
+          "name": "uninstall program while retaining data",
+          "exit_code": 0
+        },
+        {
+          "name": "upgrade/rollback/uninstall data retention",
+          "exit_code": 0
+        }
+      ],
+      "status": "PASS",
+      "scope": "Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval",
+      "completed_utc": "2026-10-29T16:48:01Z"
+    }
+  },
+  "github_run": "https://github.com/reneshraviai-creator/protocol-workbench/actions/runs/40916336854",
+  "limitations": [
+    "Localhost protocol/lifecycle acceptance only",
+    "No physical PLC or serial equipment tested in this audit",
+    "No antivirus approval, signing, production qualification or bug-free guarantee",
+    "Windows ARM x64 emulation failed installation-folder rename; unsupported",
+    "Intel Mac, Windows 32-bit and native Windows ARM64 not qualified"
+  ]
+}
