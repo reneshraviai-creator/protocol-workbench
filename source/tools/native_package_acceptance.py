@@ -35,7 +35,11 @@ def audit(target,url,digest,workspace,output):
  report={'target':target,'platform':sys.platform,'machine':platform.machine(),'runner_arch':os.environ.get('RUNNER_ARCH','local'),'package_sha256':digest,'checks':[],'status':'RUNNING','scope':'Published archive lifecycle and localhost protocols only; no physical equipment or antivirus approval'}
  setup=python=None
  def run(name,args,timeout=600):
-  result=subprocess.run([str(x) for x in args],capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=timeout)
+  environment=os.environ.copy()
+  # PowerShell 7's module path is incompatible with child Windows PowerShell 5.1.
+  # Let the latter construct its standard module path, as in Explorer/cmd launches.
+  if sys.platform=='win32':environment.pop('PSModulePath',None)
+  result=subprocess.run([str(x) for x in args],env=environment,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=timeout)
   print('CHECK:',name,'exit',result.returncode,flush=True)
   print(result.stdout[-14000:],flush=True)
   if result.stderr:print(result.stderr[-6000:],flush=True)
