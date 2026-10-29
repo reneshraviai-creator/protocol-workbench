@@ -1,0 +1,54 @@
+name: Published package native acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  acceptance:
+    name: ${{ matrix.target }}
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: Windows-x64
+            python_arch: x64
+            os: windows-2022
+            archive: Windows-x64
+            sha256: 7298c6e9c5ebc55a48cc8d314211a70556d67ee7e8c488fcd5eebb500d96c9f6
+          - target: Windows-11-ARM64-x64-emulation
+            python_arch: x64
+            os: windows-11-arm
+            archive: Windows-x64
+            sha256: 7298c6e9c5ebc55a48cc8d314211a70556d67ee7e8c488fcd5eebb500d96c9f6
+          - target: Linux-x64
+            python_arch: x64
+            os: ubuntu-24.04
+            archive: Linux
+            sha256: 73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e
+          - target: Linux-ARM64
+            python_arch: arm64
+            os: ubuntu-24.04-arm
+            archive: Linux
+            sha256: 73bb91d3457fc8ba9019442b9ae0e38f417e6e566fb6718e8f9f5553e16ca66e
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out audit scripts (no stored credentials)
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Python for audit driver
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.13'
+          architecture: ${{ matrix.python_arch }}
+      - name: Verify and exercise the actual published ZIP
+        run: python source/tools/native_package_acceptance.py --target "${{ matrix.target }}" --url "https://github.com/reneshraviai-creator/protocol-workbench/releases/download/v2.0.0-preview.14/ProtocolWorkbench-2.0.0-preview.14-${{ matrix.archive }}.zip" --sha256 "${{ matrix.sha256 }}" --workspace "${{ runner.temp }}/pw-acceptance" --output "${{ runner.temp }}/pw-audit-report"
+      - name: Preserve minimal audit result (no app data or credentials)
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-audit-${{ matrix.target }}
+          path: ${{ runner.temp }}/pw-audit-report/Native_Package_Acceptance.json
+          retention-days: 1
+          if-no-files-found: warn
