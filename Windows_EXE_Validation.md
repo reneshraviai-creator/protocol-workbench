@@ -1,3 +1,5 @@
+> **WITHDRAWN:** The unsigned EXE download and checksum were removed on 30 October 2026. No signed EXE is available. The following is historical documentation, not a current download recommendation.
+
 # Windows EXE validation — Preview 14, installer revision exe1
 
 Date: 30 October 2026. Engineering Preview. This is an unsigned single-EXE setup wrapper around the existing patched Preview 14 offline x64 application; it is not a native ARM64 application build.

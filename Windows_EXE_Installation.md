@@ -1,3 +1,5 @@
+> **WITHDRAWN:** The unsigned EXE download and checksum were removed on 30 October 2026. No signed EXE is available. The following is historical documentation, not a current download recommendation.
+
 # Windows EXE setup — Preview 14, installer revision exe1
 
 A single guided Windows installer for the existing Preview 14 offline x64 application. Engineering Preview; unsigned; native Windows and ARM emulation acceptance are not yet validated. The application's browser GUI and protocol adapters are unchanged.
