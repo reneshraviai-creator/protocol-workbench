@@ -1,0 +1,4 @@
+Installer engine: NSIS 3.13, standard zlib compression and unmodified Modern UI 2 / nsDialogs / nsExec / System plugins.
+Upstream: https://nsis.sourceforge.io/ and https://sourceforge.net/projects/nsis/files/NSIS%203/3.13/
+Compiler obtained from the official Homebrew makensis bottle, verified against its published SHA-256. No compiler is installed on the target system.
+Third-party notices remain applicable independently of the Protocol Workbench evaluation permission.

@@ -6,6 +6,12 @@ Protocol Workbench brings a local browser interface and Python protocol services
 
 **Current packaged version: 2.0.0-preview.14 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
 
+## Windows: single EXE setup
+
+Download [ProtocolWorkbench-2.0.0-preview.14-Setup.exe](https://github.com/reneshraviai-creator/protocol-workbench/releases/download/v2.0.0-preview.14/ProtocolWorkbench-2.0.0-preview.14-Setup.exe) from the Preview 14 assets. It provides a setup wizard, automatic architecture checks, Start menu/optional desktop shortcuts and an uninstall entry. No manual ZIP extraction or separate Python install is needed. Read [Windows EXE installation](Windows_EXE_Installation.md).
+
+**Parallels on Apple Silicon:** Windows 11 ARM64 can try the x64 runtime through Windows emulation only after an explicit experimental checkbox. This is not a native ARM64 build and has not been validated on that VM. The EXE is unsigned; native Windows install/uninstall and antivirus acceptance remain untested. The original archive installer remains an alternative.
+
 ## What an engineer can do
 
 | Area | Included workflows |
