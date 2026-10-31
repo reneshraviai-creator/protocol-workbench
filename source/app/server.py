@@ -111,7 +111,7 @@ async def apply_project(request,p,*,expected=None,require_idle=False):
         recovery_warning=remember_safe(request.app['recovery'],'workspace','Saved workspace',p) or recovery_warning
     return web.json_response({'ok':True,**({'recovery_warning':recovery_warning} if recovery_warning else {})},headers={'ETag':revision(p)})
 async def status(request):
-    data=request.app['engine'].snapshot();data['monitors']=[m.summary() for m in request.app['monitors'].monitors.values()];data['resources']=request.app['resources'].snapshot();data['rtu_demo']=request.app['rtu_demo'].summary();return web.json_response(data)
+    data=request.app['engine'].snapshot();data['monitors']=[m.summary() for m in request.app['monitors'].monitors.values()];data['resources']=request.app['resources'].snapshot();data['rtu_demo']=request.app['rtu_demo'].summary();from architecture import scenario_devices;data['scenario_devices']=scenario_devices(request.app);return web.json_response(data)
 async def action(request):
     e=request.app['engine'];body=await request.json();act=body['action'];ident=body.get('id')
     if act=='stop_all':
@@ -244,7 +244,14 @@ async def node_inspect(request):
 
 async def simulation_draft(request):
     from simulation_wizard import build_simulation
-    return web.json_response({'scenario':build_simulation(await request.json())})
+    body=await request.json()
+    if body.get('workspace_device'):
+        from architecture import device_draft
+        return web.json_response({'project':device_draft(body)})
+    if body.get('scanner_draft'):
+        from architecture import scanner_draft
+        return web.json_response({'connection':scanner_draft(body['connection'],body.get('serial_port'))})
+    return web.json_response({'scenario':build_simulation(body)})
 
 async def validate_only(request):
     validate_project(await request.json());return web.json_response({'ok':True})
@@ -401,7 +408,7 @@ async def startup(request):
 
 
 async def template_list(request):
-    return web.json_response(request.app['catalogue'].all('templates'))
+    return web.json_response([r for r in request.app['catalogue'].all('templates') if not r.get('archived')])
 async def template_export(request):
     from templates import portable
     return web.json_response(portable(request.app['catalogue'].get('scenarios',request.match_info['id'])))
@@ -414,11 +421,16 @@ async def template_save(request):
     b=await request.json()
     document=portable(request.app['catalogue'].get('scenarios',b['scenario'])) if 'scenario' in b else preview(b['template'])[0]
     row={'id':ident(),'name':document['scenario']['name'],'updated':time.time(),'template':document}
+    if 'scenario' in b:row['source_scenario']=b['scenario']
     request.app['catalogue'].put('templates',row)
     return web.json_response(row)
 async def template_import(request):
     from templates import instantiate,preview
     b=await request.json();scenario=instantiate(b['template'],b.get('bindings',{}),b.get('name'));scenario['updated']=time.time()
+    if b.get('source_template'):
+        origin=request.app['catalogue'].get('templates',b['source_template'])
+        if origin.get('archived'):raise ValueError('Restore this template before creating a test')
+        scenario['source_template']=origin['id']
     request.app['catalogue'].put('scenarios',scenario)
     return web.json_response(scenario)
 
@@ -441,7 +453,20 @@ async def recovery_history(request):return web.json_response(request.app['recove
 async def recovery_snapshot(request):return web.json_response(request.app['recovery'].snapshot(request.match_info['id']))
 
 async def scenario_list(request):
-    store=request.app['catalogue'];return web.json_response([{**s,**store.revision(s)} for s in store.all('scenarios')])
+    store=request.app['catalogue'];return web.json_response([{**s,**store.revision(s)} for s in store.all('scenarios') if not s.get('archived')])
+
+async def library_trash(request):
+    store=request.app['catalogue']
+    return web.json_response([{ 'id':r['id'],'name':r['name'],'kind':kind,'updated':r.get('updated',0)} for kind in ('templates','scenarios') for r in store.all(kind) if r.get('archived')])
+
+async def library_item_action(request):
+    kind=request.match_info['kind'];action=request.match_info['action'];key=request.match_info['id']
+    if kind not in ('templates','scenarios') or action not in ('archive','restore'):raise ValueError('Invalid library action')
+    store=request.app['catalogue'];row=store.get(kind,key)
+    if kind=='scenarios' and action=='archive' and any(r.get('scenario')==key and r['state'] in ('QUEUED','RUNNING','STOPPING') for r in store.all('runs')):
+        raise ValueError('Stop this test run before removing its saved definition. Open Running now to find it.')
+    row['archived']=action=='archive';row['updated']=time.time();store.put(kind,row)
+    return web.json_response({'ok':True,'archived':row['archived']})
 async def scenario_save(request):
     body=validate_scenario(await request.json())
     body['id']=body.get('id') or ident();body['updated']=time.time()
@@ -451,14 +476,19 @@ async def scenario_save(request):
     remember_safe(request.app['recovery'],'scenario:'+body['id'],body['name'],body)
     return web.json_response({**body,**request.app['catalogue'].revision(body)})
 async def scenario_run(request):
-    key=await request.app['runner'].start((await request.json())['id'])
+    scenario_id=(await request.json())['id']
+    if request.app['catalogue'].get('scenarios',scenario_id).get('archived'):raise ValueError('Restore this test from Trash before running it')
+    key=await request.app['runner'].start(scenario_id)
     return web.json_response({'id':key})
 async def scenario_stop(request):
     body=await request.json()
     await request.app['runner'].stop(body.get('id'));return web.json_response({'ok':True})
 async def run_list(request):
     rows=[]
-    for r in request.app['catalogue'].all('runs')[:100]:
+    all_rows=request.app['catalogue'].all('runs')
+    active_states=('RUNNING','QUEUED','STOPPING')
+    selected=[r for r in all_rows if r['state'] in active_states]+[r for r in all_rows if r['state'] not in active_states][:100]
+    for r in selected:
         r.pop('snapshot',None)
         r.pop('logs',None)
         for step in r['steps']:
@@ -516,6 +546,7 @@ def create_app(project=None):
     app.add_routes([web.get('/api/recovery/drafts',recovery_drafts),web.post('/api/recovery/drafts',recovery_save),web.get('/api/recovery/drafts/{id}',recovery_get),web.post('/api/recovery/drafts/{id}/mark',recovery_mark),web.get('/api/recovery/history',recovery_history),web.get('/api/recovery/history/{id}',recovery_snapshot)])
     app.add_routes([web.post('/api/device-setup/inspect',setup_inspect),web.post('/api/device-setup/address',setup_address)])
     app.add_routes([web.get('/api/templates',template_list),web.post('/api/templates/preview',template_preview),web.post('/api/templates/save',template_save),web.post('/api/templates/import',template_import),web.get('/api/scenarios/{id}/template',template_export)])
+    app.add_routes([web.get('/api/library-trash',library_trash),web.post('/api/library-items/{kind}/{id}/{action}',library_item_action)])
     app.add_routes([web.get('/api/scenarios',scenario_list),web.post('/api/scenarios',scenario_save),web.post('/api/scenarios/run',scenario_run),web.post('/api/scenarios/stop',scenario_stop),web.get('/api/runs',run_list),web.get('/api/runs/{id}',run_detail),web.get('/api/runs/{id}/report',run_report),web.get('/api/runs/{id}/csv',run_csv)])
     app.add_routes([web.get('/',index),web.get('/api/bootstrap',bootstrap),web.get('/api/project',project_get),web.put('/api/project',project_put),web.get('/api/serial-ports',serial_ports),web.get('/api/status',status),web.post('/api/action',action),web.post('/api/shutdown',shutdown),web.post('/api/import-tags',imported),web.post('/api/generate-tags',generated_tags),web.post('/api/validate-project',validate_only),web.post('/api/simulation-draft',simulation_draft),web.post('/api/preview-tags',preview_tags),web.post('/api/connection',connection_operation),web.post('/api/resolve',resolve),web.post('/api/certificate',certificate),web.get('/api/export',export),web.get('/api/tags/{id}',export_tags),web.post('/api/startup',startup),web.post('/api/diagnostics',diagnostics)])
     app[PERFORMANCE_KEY]=Performance(project.get('settings',{}).get('performance'));install_performance(app)

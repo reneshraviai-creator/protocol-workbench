@@ -181,11 +181,18 @@ def validate_project(p):
     project_settings=p.get('settings',{})
     if not isinstance(project_settings,dict):raise ValueError('Project settings must be an object')
     performance_settings(project_settings.get('performance'))
+    if 'presentation_views' in project_settings:
+        from architecture import validate_presentation_views
+        validate_presentation_views(project_settings['presentation_views'])
     connections=p.get('connections',[]);jobs=p.get('jobs',[])
     if not isinstance(connections,list) or not isinstance(jobs,list): raise ValueError('Connections and jobs must be lists')
     if len(connections)>100 or len(jobs)>100: raise ValueError('Maximum 100 connections and jobs')
     for item in connections+jobs:
         if not isinstance(item.get('id'),str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}',item['id']): raise ValueError('IDs must contain 1..64 letters, digits, underscores or hyphens')
+    for c in connections:
+        if 'visual' in c:
+            from architecture import visual
+            visual(c['visual'])
     ids=[c['id'] for c in connections]
     if len(ids)!=len(set(ids)): raise ValueError('Duplicate connection ID')
     lookup={c['id']:c for c in connections}

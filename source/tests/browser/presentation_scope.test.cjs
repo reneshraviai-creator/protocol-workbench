@@ -1,0 +1,10 @@
+const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
+const original={name:'Whole workspace',connections:[{id:'simA'},{id:'scannerA',visual:{source_id:'simA'}},{id:'simB'}],jobs:[{id:'jobA',connection:'simA'},{id:'jobB',connection:'simB'},{id:'bridge',source:'simA',connection:'simB'}],settings:{}};
+const context={project:structuredClone(original),snapshot:{jobs:{jobA:{state:'RUNNING'},jobB:{state:'RUNNING'},bridge:{state:'RUNNING'}},monitors:[{connection:'scannerA'},{connection:'simB'}],scenario_devices:[{name:'Other test'}]}};
+vm.createContext(context);vm.runInContext(fs.readFileSync(path.join(__dirname,'../../app/static/presentations.js'),'utf8'),context);
+vm.runInContext("studioScope={name:'Customer A',devices:['simA','scannerA']}",context);
+let p=vm.runInContext('studioViewProject()',context),s=vm.runInContext('studioViewSnapshot()',context);
+assert.deepEqual(Array.from(p.connections,x=>x.id),['simA','scannerA']);assert.deepEqual(Array.from(p.jobs,x=>x.id),['jobA']);assert.deepEqual(Object.keys(s.jobs),['jobA']);assert.equal(s.monitors.length,1);assert.equal(s.scenario_devices.length,0);assert.deepEqual(context.project,original);assert.equal(context.snapshot.jobs.jobB.state,'RUNNING');
+vm.runInContext("studioScope={name:'Deleted',devices:['missing']}",context);assert.equal(vm.runInContext('studioViewProject().connections.length',context),0);
+vm.runInContext('studioScope=null',context);assert.equal(vm.runInContext('studioViewProject().connections.length',context),3);
+console.log('PASS: presentation scope hides unrelated devices/jobs/links/tests, keeps hidden jobs running, and never expands stale scopes.');

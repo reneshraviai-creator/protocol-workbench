@@ -4,7 +4,13 @@
 
 Protocol Workbench brings a local browser interface and Python protocol services together in one application. Engineers can configure connections, create tags and registers, simulate test devices, monitor values, move data between endpoints and save repeatable test scenarios. It is intended for local simulators and isolated test equipment, not production or live operating environments.
 
-**Current packaged version: 2.0.0-preview.14 — Engineering Preview.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
+**Latest source: 2.0.0-preview.15-dev.3 — Engineering Preview (source-only).**
+
+**Current packaged installers: 2.0.0-preview.14.** This public repository contains clean source checkpoints, downloadable archive installers, guides and recorded validation summaries. It is not a certified commissioning product and is not offered under an open-source licence.
+
+## Latest source preview
+
+Preview 15 dev.3 adds the dark illustrated device workspace, scoped architecture presentations, job/dependency links, template lifecycle improvements and guided setup fixes. It retains OPC UA, Modbus TCP/RTU, simulation, scanning, protocol bridges and test automation. See [development handover](DEVELOPMENT_HANDOVER.md) for setup, regression commands and the improvement backlog, and [release notes](docs/Preview_15_dev3.md) for validation and limitations. This source preview has no refreshed native installers.
 
 ## Available installers
 

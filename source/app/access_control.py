@@ -103,6 +103,7 @@ def permitted(role,path,method,body):
     if role=='Read-only':return False
     if role=='Engineer':
         # Explicit set: adding a new API does not implicitly grant mutation privileges.
+        if method=='POST' and re.fullmatch(r'/api/library-items/(templates|scenarios)/[^/]+/(archive|restore)',path):return True
         return path in ENGINEER or bool(re.fullmatch(r'/api/(opcua-import/[^/]+/(selection|draft|cancel)|monitors/[^/]+/(write|record|record-stop)|health/[^/]+/resume|mixed-generation/[^/]+/(cancel|accept)|mixed-templates/[^/]+/delete|bridge-templates/[^/]+/delete)',path))
     if role=='Operator':return path in ('/api/action','/api/scenarios/run','/api/monitors','/api/watchlists/start') or bool(re.fullmatch(r'/api/monitors/[^/]+/(record|record-stop)',path))
     return False

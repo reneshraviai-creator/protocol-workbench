@@ -16,7 +16,7 @@ def build_simulation(spec):
             from urllib.parse import urlparse
             if urlparse(c.get('url','')).hostname not in ('127.0.0.1','localhost','::1'):raise ValueError('Local simulator must listen on a loopback address')
             c['security']='None';c.pop('username',None);c.pop('password',None)
-        elif c.get('host') not in ('127.0.0.1','localhost','::1'):raise ValueError('Local simulator must listen on a loopback address')
+        elif c.get('transport','tcp')!='rtu' and c.get('host') not in ('127.0.0.1','localhost','::1'):raise ValueError('Local simulator must listen on a loopback address')
     source=spec.get('tag_source','generate')
     if source=='generate':
         c['tags']=[];settings=copy.deepcopy(spec.get('tag_spec',{}))
@@ -44,7 +44,12 @@ def build_simulation(spec):
     remaining=duration
     while remaining:
         seconds=min(240,remaining);steps.append({'action':'wait','seconds':seconds,'timeout':seconds+10,'label':f'Simulate for {seconds} seconds'});remaining-=seconds
-    steps.append({'action':'read','connection':c['id'],'scope':'all','variable':'final_values','timeout':120,'label':f'Read all {len(c["tags"])} points before cleanup'})
+    rtu=c['protocol']=='modbus' and c.get('transport')=='rtu'
+    if rtu:steps.append({'action':'stop_job','job':job['id'],'timeout':30,'label':'Stop RTU job and release serial port'})
+    if not (rtu and mode=='local'):steps.append({'action':'read','connection':c['id'],'scope':'all','variable':'final_values','timeout':120,'label':f'Read all {len(c["tags"])} points before cleanup'})
     s={'name':p['name'],'description':f'{mode.title()} {c["protocol"].upper()} simulation · {len(c["tags"])} tags · {duration}s after readiness · {interval}s update interval. Test-owned jobs stop automatically.','project':p,'steps':steps}
+    if rtu:
+        s['description']=s['description'].replace('MODBUS','Modbus RTU')
+        if mode=='local':s['description']+=' Serial server only; use a separate scanner port for data verification. No self-read is performed.'
     validate_scenario(s)
     return s

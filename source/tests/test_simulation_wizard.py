@@ -97,3 +97,67 @@ def test_existing_mode_writes_to_local_device(tmp_path,protocol):
             assert server.active()  # Runner cleanup must not stop the external device.
         finally:await server.stop_all()
     asyncio.run(run())
+
+
+def rtu_spec(port='/dev/virtual'):
+    s=spec();s['connection'].update(transport='rtu',serial_port=port,baudrate=19200,bytesize=8,parity='N',stopbits=1)
+    s['connection'].pop('host');s['connection'].pop('port')
+    return s
+
+
+def test_rtu_wizard_serial_settings_and_no_same_port_self_read():
+    s=rtu_spec();before=copy.deepcopy(s);r=build_simulation(s)
+    assert s==before
+    c=r['project']['connections'][0]
+    assert c['transport']=='rtu' and c['serial_port']=='/dev/virtual'
+    assert c['baudrate']==19200 and c['parity']=='N' and c['stopbits']==1
+    assert r['steps'][-1]['action']=='stop_job'
+    assert not any(x['action']=='read' for x in r['steps'])
+    assert 'separate scanner' in r['description']
+    s['mode']='existing';r=build_simulation(s)
+    assert r['steps'][-2]['action']=='stop_job' and r['steps'][-1]['action']=='read'
+
+
+@pytest.mark.parametrize('change',[{'serial_port':''},{'serial_port':'socket://localhost:1'},{'baudrate':123},{'parity':'X'},{'stopbits':3},{'device_id':0}])
+def test_rtu_wizard_rejects_invalid_serial_settings(change):
+    s=rtu_spec();s['connection'].update(change)
+    with pytest.raises(ValueError):build_simulation(s)
+
+
+@pytest.mark.skipif(sys.platform=='win32',reason='POSIX virtual serial pair; Windows hardware acceptance separate')
+@pytest.mark.parametrize('mode',['local','existing'])
+def test_rtu_wizard_runs_over_virtual_serial_pair(tmp_path,mode):
+    from test_rtu import SerialPair
+    from test_live_monitor import until
+    from engine import Engine
+    from drivers import Modbus
+    from scenarios import Catalogue,Runner
+    from serial_config import lock
+    async def run():
+        with SerialPair() as pair:
+            external=None;reader=None;runner=None
+            s=rtu_spec(pair.ports[0] if mode=='local' else pair.ports[1]);s['mode']=mode;s['duration']=2
+            scenario=build_simulation(s);scenario['id']='rtu-wizard'
+            store=Catalogue(tmp_path/'rtu.db');store.put('scenarios',scenario);runner=Runner(store)
+            if mode=='existing':
+                device=build_simulation(rtu_spec(pair.ports[0]))['project'];device['jobs'][0]['dynamic']=False
+                external=Engine(device);job=device['jobs'][0]['id'];await external.start(job)
+                await until(lambda:external.states[job]['state']=='RUNNING')
+            try:
+                key=await runner.start(scenario['id'])
+                if mode=='local':
+                    # The peer port reads actual RTU frames while the scenario owns its server port.
+                    c=copy.deepcopy(scenario['project']['connections'][0]);c['serial_port']=pair.ports[1]
+                    reader=Modbus(c);await reader.connect()
+                    await until(lambda:any(step.get('action')=='start_job' and step.get('state')=='PASSED' for step in store.get('runs',key)['steps']))
+                    values=await reader.read(c['tags']);assert len(values)==20 and all(v==23.5 for v in values.values())
+                    await reader.close();reader=None
+                await runner.task
+                result=store.get('runs',key);assert result['state']=='PASSED',result.get('error')
+                if mode=='existing':assert result['steps'][-1]['passed_tags']==20 and external.active()
+                with lock(s['connection']):pass  # The wizard released its serial port.
+            finally:
+                if reader:await reader.close()
+                if runner.task and not runner.task.done():await runner.stop()
+                if external:await external.stop_all()
+    asyncio.run(run())
